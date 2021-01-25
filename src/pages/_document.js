@@ -33,6 +33,10 @@ class MyDocument extends Document {
           <Main />
           <div id="subpages-sidebar" />
           <NextScript />
+          <script
+            type="text/javascript"
+            src="https://checkout.razorpay.com/v1/checkout.js"
+          ></script>
         </body>
       </Html>
     );
