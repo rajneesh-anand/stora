@@ -1,0 +1,39 @@
+{
+  "name": "stora",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start -p $PORT",
+    "heroku-postbuild": "npm run build",
+    "mg": "prisma migrate dev --preview-feature"
+  },
+  "dependencies": {
+    "@prisma/client": "^2.15.0",
+    "@zeit/next-less": "^1.0.1",
+    "@zeit/next-sass": "^1.0.1",
+    "antd": "^4.5.1",
+    "classnames": "^2.2.6",
+    "less": "^3.12.2",
+    "next": "10.0.5",
+    "next-auth": "^3.2.0-canary.35",
+    "next-redux-wrapper": "^6.0.2",
+    "react": "16.14.0",
+    "react-countdown": "^2.2.1",
+    "react-dom": "16.14.0",
+    "react-mailchimp-subscribe": "^2.1.0",
+    "react-redux": "^7.2.1",
+    "react-slick": "^0.27.3",
+    "redux": "^4.0.5",
+    "redux-devtools-extension": "^2.13.8",
+    "redux-persist": "^6.0.0",
+    "redux-thunk": "^2.3.0",
+    "sass": "^1.26.10",
+    "slick-carousel": "^1.8.1",
+    "uuid": "^8.3.0"
+  },
+  "devDependencies": {
+    "@prisma/cli": "^2.15.0"
+  }
+}
