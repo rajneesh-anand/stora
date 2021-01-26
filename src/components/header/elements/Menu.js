@@ -130,7 +130,11 @@ function Menu({ containerType }) {
                   }
                   alt=""
                 />
-                <span>{getTotalProductInCart(cartState)}</span>
+                {getTotalProductInCart(cartState) != 0 ? (
+                  <span>{getTotalProductInCart(cartState)}</span>
+                ) : (
+                  ""
+                )}
               </div>
             </div>
           </div>

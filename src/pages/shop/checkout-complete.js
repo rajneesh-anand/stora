@@ -9,13 +9,16 @@ import LayoutOne from "../../components/layouts/LayoutOne";
 import Container from "../../components/other/Container";
 import { formatCurrency } from "../../common/utils";
 
-export default function checkoutComplete() {
+function checkoutComplete({ msg }) {
+  const router = useRouter();
+
+  console.log(msg);
   return (
     <LayoutOne title="Checkout completed">
       <Container>
         <div className="checkout-complete">
           <div className="checkout-complete-summary">
-            <h3>Congratulation! You’ve completed payment.</h3>
+            <h3>{msg}</h3>
             <div className="checkout-complete-summary__table">
               <div className="checkout-complete-summary__table-item">
                 <h5>Order Number</h5>
@@ -74,3 +77,10 @@ export default function checkoutComplete() {
     </LayoutOne>
   );
 }
+
+checkoutComplete.get = async ({ query: { msg } }) => {
+  console.log(msg);
+  return { msg };
+};
+
+export default checkoutComplete;

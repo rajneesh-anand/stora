@@ -1,5 +1,6 @@
 import Razorpay from "razorpay";
 export default async function handler(req, res) {
+  const { totalCartAmount } = req.body;
   try {
     const instance = new Razorpay({
       key_id: process.env.RAZORPAY_KEY_ID,
@@ -7,7 +8,7 @@ export default async function handler(req, res) {
     });
 
     const options = {
-      amount: 50000, // amount in smallest currency unit
+      amount: totalCartAmount * 100, // amount in smallest currency unit
       currency: "INR",
       receipt: "receipt_order_74394",
     };
@@ -22,6 +23,4 @@ export default async function handler(req, res) {
   } catch (error) {
     res.status(500).send(error);
   }
-
-  //   res.status(200).json({ text: "Hello" });
 }

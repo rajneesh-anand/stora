@@ -10,7 +10,7 @@ import {
   Collapse,
 } from "antd";
 import { CaretRightOutlined } from "@ant-design/icons";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import Slider from "react-slick";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
@@ -50,7 +50,23 @@ export default function checkout() {
   const cartState = useSelector((state) => state.cartReducer);
   const globalState = useSelector((state) => state.globalReducer);
   const { currency, locales } = globalState.currency;
-  const [paymentMethod, setPaymentMethod] = useState("Direct Bank Transfer");
+  const [paymentMethod, setPaymentMethod] = useState("");
+  const [shippingCharge, setShippingCharge] = useState(50);
+  const [totalCartValue, setTotalCartValue] = useState(
+    calculateTotalPrice(cartState)
+  );
+  const [data, setData] = useState({
+    name: "",
+    mobile: "",
+    email: "",
+    address: "",
+    address_two: "",
+    locality: "",
+    city: "",
+    pin: "",
+    state: "",
+    country: "India",
+  });
 
   const settings = {
     arrows: false,
@@ -80,6 +96,108 @@ export default function checkout() {
       },
     ],
   };
+
+  const isValid = () => {
+    const { name, mobile, email, address, city, pin, state } = data;
+    if (
+      name === "" ||
+      mobile === "" ||
+      email === "" ||
+      address === "" ||
+      city === "" ||
+      pin === "" ||
+      state === ""
+    ) {
+      return false;
+    } else {
+      return true;
+    }
+  };
+
+  async function displayRazorpay() {
+    const result = await fetch("/api/orders", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ totalCartAmount: totalCartValue }),
+    });
+    const order = await result.json();
+
+    console.log(order);
+
+    if (!result) {
+      alert("Server error. Are you online?");
+      return;
+    }
+
+    const { amount, id: order_id, currency } = order;
+
+    const options = {
+      key: "rzp_test_ZiTzWfVF6kfxi6", // Enter the Key ID generated from the Dashboard
+      amount: amount.toString(),
+      currency: currency,
+      name: "Soumya Corp.",
+      description: "Test Transaction",
+      //   image: { logo },
+      order_id: order_id,
+      handler: async function (response) {
+        const data = {
+          orderCreationId: order_id,
+          razorpayPaymentId: response.razorpay_payment_id,
+          razorpayOrderId: response.razorpay_order_id,
+          razorpaySignature: response.razorpay_signature,
+          amount: amount,
+        };
+
+        const result = await fetch("/api/success", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        });
+
+        const resultJson = await result.json();
+        console.log(resultJson.msg);
+        router.push({
+          pathname: "/shop/checkout-complete",
+          query: { msg: resultJson.msg },
+        });
+      },
+      prefill: {
+        name: "Soumya Dey",
+        email: "SoumyaDey@example.com",
+        contact: "9999999999",
+      },
+      notes: {
+        address: "Soumya Dey Corporate Office",
+      },
+      theme: {
+        color: "#61dafb",
+      },
+    };
+
+    const paymentObject = new window.Razorpay(options);
+    paymentObject.open();
+  }
+
+  const handleSubmit = (e) => {
+    // e.preventDefault();
+
+    if (isValid()) {
+      const body = {
+        name: data.name,
+        mobile: data.mobile,
+        email: data.email,
+        address: data.address,
+        address_two: data.address_two,
+        locality: data.locality,
+        city: data.city,
+        pin: data.pin,
+        state: data.state,
+        country: "India",
+      };
+      displayRazorpay();
+    }
+  };
+
   const onFinish = (values) => {
     router.push("/shop/checkout-complete");
   };
@@ -92,6 +210,35 @@ export default function checkout() {
     },
     [paymentMethod]
   );
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setData({
+      ...data,
+      [name]: value,
+    });
+  };
+
+  const handleState = (val, e) => {
+    setData({
+      ...data,
+      state: val,
+    });
+  };
+
+  const handleTotal = (e) => {
+    e.preventDefault();
+    setPaymentMethod(e.target.value);
+    e.target.value == "Shipping"
+      ? setShippingCharge(50.0)
+      : setShippingCharge(0);
+  };
+  useEffect(() => {
+    let cartTotal = calculateTotalPrice(cartState);
+    let shipping = shippingCharge;
+    let total = cartTotal + shipping;
+    setTotalCartValue(total.toFixed(2));
+  }, [shippingCharge][cartState]);
   return (
     <LayoutOne title="Checkout">
       <div className="checkout">
@@ -102,15 +249,15 @@ export default function checkout() {
                 <Form
                   name="basic"
                   initialValues={{ remember: true }}
-                  onFinish={onFinish}
-                  onFinishFailed={onFinishFailed}
+                  // onFinish={onFinish}
+                  // onFinishFailed={onFinishFailed}
                   id="checkout-form"
                   layout="vertical"
                   className="checkout-form"
                 >
                   <Collapse
                     bordered={true}
-                    defaultActiveKey={["1"]}
+                    defaultActiveKey={["1", "2"]}
                     expandIcon={({ isActive }) => (
                       <CaretRightOutlined rotate={isActive ? 90 : 0} />
                     )}
@@ -120,6 +267,7 @@ export default function checkout() {
                       header="Personal Information"
                       key="1"
                       className="site-collapse-custom-panel"
+                      disabled={true}
                     >
                       <Row gutter={{ xs: 10, sm: 15, md: 10, lg: 24 }}>
                         <Col span={8} md={8} xs={24}>
@@ -129,11 +277,16 @@ export default function checkout() {
                             rules={[
                               {
                                 required: true,
-                                message: "Enter your name !",
+                                message: "Please enter your name !",
                               },
                             ]}
                           >
-                            <Input placeholder="Enter Your Name" />
+                            <Input
+                              name="name"
+                              onChange={handleChange}
+                              placeholder="Please enter your name !"
+                              value={data.name}
+                            />
                           </Form.Item>
                         </Col>
                         <Col span={6} md={6} xs={24}>
@@ -147,7 +300,12 @@ export default function checkout() {
                               },
                             ]}
                           >
-                            <Input placeholder="Contact Number" />
+                            <Input
+                              name="mobile"
+                              onChange={handleChange}
+                              placeholder="Contact Number"
+                              value={data.mobile}
+                            />
                           </Form.Item>
                         </Col>
                         <Col span={10} md={10} xs={24}>
@@ -161,7 +319,12 @@ export default function checkout() {
                               },
                             ]}
                           >
-                            <Input placeholder="Enter Your Email Address" />
+                            <Input
+                              name="email"
+                              onChange={handleChange}
+                              placeholder="Please enter your email address"
+                              value={data.email}
+                            />
                           </Form.Item>
                         </Col>
                       </Row>
@@ -171,6 +334,7 @@ export default function checkout() {
                       header="Shipping Address"
                       key="2"
                       className="site-collapse-custom-panel"
+                      disabled={true}
                     >
                       <Row gutter={{ xs: 10, sm: 15, md: 10, lg: 24 }}>
                         <Col span={12} md={12} xs={24}>
@@ -184,7 +348,12 @@ export default function checkout() {
                               },
                             ]}
                           >
-                            <Input placeholder="House No./Block/Street" />
+                            <Input
+                              name="address"
+                              onChange={handleChange}
+                              placeholder="House No./Block/Street"
+                              value={data.address}
+                            />
                           </Form.Item>
                         </Col>
                         <Col span={12} md={12} xs={24}>
@@ -198,7 +367,11 @@ export default function checkout() {
                               },
                             ]}
                           >
-                            <Input />
+                            <Input
+                              name="address_two"
+                              onChange={handleChange}
+                              value={data.address_two}
+                            />
                           </Form.Item>
                         </Col>
                         <Col span={12} md={12} xs={24}>
@@ -212,7 +385,12 @@ export default function checkout() {
                               },
                             ]}
                           >
-                            <Input placeholder="Famous Landmark" />
+                            <Input
+                              name="locality"
+                              onChange={handleChange}
+                              placeholder="Famous Landmark"
+                              value={data.locality}
+                            />
                           </Form.Item>
                         </Col>
                         <Col span={8} md={8} xs={24}>
@@ -226,7 +404,11 @@ export default function checkout() {
                               },
                             ]}
                           >
-                            <Input />
+                            <Input
+                              name="city"
+                              onChange={handleChange}
+                              value={data.city}
+                            />
                           </Form.Item>
                         </Col>
                         <Col span={4} md={4} xs={8}>
@@ -236,11 +418,15 @@ export default function checkout() {
                             rules={[
                               {
                                 required: true,
-                                message: "Please enter pincode !",
+                                message: "Enter Pincode !",
                               },
                             ]}
                           >
-                            <Input />
+                            <Input
+                              name="pin"
+                              onChange={handleChange}
+                              value={data.pin}
+                            />
                           </Form.Item>
                         </Col>
 
@@ -260,7 +446,10 @@ export default function checkout() {
                               style={{}}
                               placeholder="Select State"
                               optionFilterProp="children"
-                              // onChange={onChange}
+                              onChange={handleState}
+                              onSelect={(value, event) =>
+                                handleState(value, event)
+                              }
                               // onFocus={onFocus}
                               // onBlur={onBlur}
                               // onSearch={onSearch}
@@ -271,7 +460,9 @@ export default function checkout() {
                               }
                             >
                               {stateData.map((city) => (
-                                <Option key={city}>{city}</Option>
+                                <Option key={city} value={city}>
+                                  {city}
+                                </Option>
                               ))}
                             </Select>
                           </Form.Item>
@@ -282,12 +473,17 @@ export default function checkout() {
                             name="country"
                             rules={[
                               {
-                                required: true,
+                                required: false,
                                 message: "Please enter country !",
                               },
                             ]}
                           >
-                            <Input disabled={true} placeholder="INDIA" />
+                            <Input
+                              name="country"
+                              onChange={handleChange}
+                              value={data.country}
+                              placeholder="India"
+                            />
                           </Form.Item>
                         </Col>
                       </Row>
@@ -336,7 +532,7 @@ export default function checkout() {
                       </tbody>
                     </table>
                     <div className="divider" />
-                    <table className="checkout-total__table-subtotal">
+                    {/* <table className="checkout-total__table-subtotal">
                       <tbody>
                         <tr>
                           <td>Subtotal</td>
@@ -349,8 +545,8 @@ export default function checkout() {
                           </td>
                         </tr>
                       </tbody>
-                    </table>
-                    <div className="divider" />
+                    </table> */}
+                    {/* <div className="divider" /> */}
                     <table className="checkout-total__table-shiping">
                       <tbody>
                         <tr>
@@ -359,8 +555,10 @@ export default function checkout() {
                               name="radiogroup"
                               defaultValue={"Shipping"}
                             >
-                              <Radio value="Shipping">Shipping*</Radio>
-                              <Radio value="LocalPickup">
+                              <Radio onClick={handleTotal} value="Shipping">
+                                Shipping*
+                              </Radio>
+                              <Radio onClick={handleTotal} value="LocalPickup">
                                 Pick Items @ Store
                               </Radio>
                             </Radio.Group>
@@ -371,10 +569,11 @@ export default function checkout() {
                         </tr>
                       </tbody>
                     </table>
+                    <div className="divider" />
                     <table className="checkout-total__table-total">
                       <tbody>
                         <tr>
-                          <td>Total</td>
+                          <td>Sub Total</td>
                           <td>
                             {formatCurrency(
                               calculateTotalPrice(cartState),
@@ -383,9 +582,39 @@ export default function checkout() {
                             )}
                           </td>
                         </tr>
+                        <tr>
+                          <td>Shipping Charge</td>
+                          <td>
+                            {shippingCharge > 0
+                              ? formatCurrency(
+                                  shippingCharge,
+                                  locales,
+                                  currency
+                                )
+                              : "FREE"}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Total</td>
+                          <td>
+                            {formatCurrency(totalCartValue, locales, currency)}
+                          </td>
+                        </tr>
                       </tbody>
                     </table>
-                    <Collapse
+                    <div className="divider" />
+                    <Button
+                      className="checkout-functions--next"
+                      form="checkout-form"
+                      key="submit"
+                      htmlType="submit"
+                      style={{ marginBottom: 0 }}
+                      onClick={handleSubmit}
+                    >
+                      PAY WITH RAZORPAY
+                    </Button>
+                    {/* <button onClick={displayRazorpay}>PAY WITH RAZORPAY</button> */}
+                    {/* <Collapse
                       className="checkout-payment"
                       accordion
                       defaultActiveKey={paymentMethod}
@@ -411,7 +640,7 @@ export default function checkout() {
                           <p>{item.content}</p>
                         </Panel>
                       ))}
-                    </Collapse>
+                    </Collapse> */}
                   </div>
                 </div>
               </Col>
