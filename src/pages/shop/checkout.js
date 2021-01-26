@@ -3,11 +3,13 @@ import {
   Input,
   Button,
   Checkbox,
+  Radio,
   Row,
   Col,
   Select,
   Collapse,
 } from "antd";
+import { CaretRightOutlined } from "@ant-design/icons";
 import { useState, useCallback } from "react";
 import Slider from "react-slick";
 import { useRouter } from "next/router";
@@ -39,6 +41,8 @@ const paymentData = [
   },
 ];
 
+const stateData = ["BIHAR", "DELHI"];
+
 export default function checkout() {
   const { Option } = Select;
   const { Panel } = Collapse;
@@ -47,6 +51,7 @@ export default function checkout() {
   const globalState = useSelector((state) => state.globalReducer);
   const { currency, locales } = globalState.currency;
   const [paymentMethod, setPaymentMethod] = useState("Direct Bank Transfer");
+
   const settings = {
     arrows: false,
     infinite: true,
@@ -94,7 +99,6 @@ export default function checkout() {
           <Container>
             <Row gutter={{ xs: 0, lg: 70 }}>
               <Col span={24} lg={15} xl={17}>
-                <h3 className="checkout-title">Billing details</h3>
                 <Form
                   name="basic"
                   initialValues={{ remember: true }}
@@ -104,144 +108,202 @@ export default function checkout() {
                   layout="vertical"
                   className="checkout-form"
                 >
-                  <Row gutter={{ xs: 10, sm: 15, md: 30, lg: 70 }}>
-                    <Col span={24} md={12}>
-                      <Form.Item
-                        label="First name"
-                        name="firstname"
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please input your first name!",
-                          },
-                        ]}
-                      >
-                        <Input />
-                      </Form.Item>
-                    </Col>
-                    <Col span={24} md={12}>
-                      <Form.Item
-                        label="Last name"
-                        name="lastname"
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please input your last name!",
-                          },
-                        ]}
-                      >
-                        <Input />
-                      </Form.Item>
-                    </Col>
-                    <Col span={24} md={12}>
-                      <Form.Item
-                        label="Provine"
-                        name="provine"
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please input your provine!",
-                          },
-                        ]}
-                      >
-                        <Select>
-                          <Option value="male">male</Option>
-                          <Option value="female">female</Option>
-                          <Option value="other">other</Option>
-                        </Select>
-                      </Form.Item>
-                    </Col>
-                    <Col span={24} md={12}>
-                      <Form.Item
-                        label="City"
-                        name="city"
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please input your city!",
-                          },
-                        ]}
-                      >
-                        <Select>
-                          <Option value="male">male</Option>
-                          <Option value="female">female</Option>
-                          <Option value="other">other</Option>
-                        </Select>
-                      </Form.Item>
-                    </Col>
-                    <Col span={24} md={12}>
-                      <Form.Item
-                        label="Address"
-                        name="address"
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please input your address!",
-                          },
-                        ]}
-                      >
-                        <Input />
-                      </Form.Item>
-                    </Col>
-                    <Col span={24} md={12}>
-                      <Form.Item label="Address 2" name="address2">
-                        <Input />
-                      </Form.Item>
-                    </Col>
-                    <Col span={24} md={12}>
-                      <Form.Item
-                        label="Country/States"
-                        name="country"
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please input your country !",
-                          },
-                        ]}
-                      >
-                        <Select>
-                          <Option value="male">male</Option>
-                          <Option value="female">female</Option>
-                          <Option value="other">other</Option>
-                        </Select>
-                      </Form.Item>
-                    </Col>
-                    <Col span={24} md={12}>
-                      <Form.Item label="Postcode/Zip" name="zip">
-                        <Input />
-                      </Form.Item>
-                    </Col>
-                    <Col span={24} md={12}>
-                      <Form.Item label="Email" name="email">
-                        <Input />
-                      </Form.Item>
-                    </Col>
-                    <Col span={24} md={12}>
-                      <Form.Item
-                        label="Phone number"
-                        name="phone"
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please input your phone number !",
-                          },
-                        ]}
-                      >
-                        <Input />
-                      </Form.Item>
-                    </Col>
-                    <Col span={24}>
-                      <Form.Item name="news-subcribe" valuePropName="checked">
-                        <Checkbox>
-                          I want to receive exclusive discounts and information
-                          on the latest Stora trends.
-                        </Checkbox>
-                      </Form.Item>
-                    </Col>
-                  </Row>
+                  <Collapse
+                    bordered={true}
+                    defaultActiveKey={["1"]}
+                    expandIcon={({ isActive }) => (
+                      <CaretRightOutlined rotate={isActive ? 90 : 0} />
+                    )}
+                    className="site-collapse-custom-collapse"
+                  >
+                    <Panel
+                      header="Personal Information"
+                      key="1"
+                      className="site-collapse-custom-panel"
+                    >
+                      <Row gutter={{ xs: 10, sm: 15, md: 10, lg: 24 }}>
+                        <Col span={8} md={8} xs={24}>
+                          <Form.Item
+                            label="Name"
+                            name="name"
+                            rules={[
+                              {
+                                required: true,
+                                message: "Enter your name !",
+                              },
+                            ]}
+                          >
+                            <Input placeholder="Enter Your Name" />
+                          </Form.Item>
+                        </Col>
+                        <Col span={6} md={6} xs={24}>
+                          <Form.Item
+                            label="Mobile/Telephone"
+                            name="mobile"
+                            rules={[
+                              {
+                                required: true,
+                                message: "Enter contact number",
+                              },
+                            ]}
+                          >
+                            <Input placeholder="Contact Number" />
+                          </Form.Item>
+                        </Col>
+                        <Col span={10} md={10} xs={24}>
+                          <Form.Item
+                            label="Email"
+                            name="email"
+                            rules={[
+                              {
+                                required: true,
+                                message: "Please enter email address!",
+                              },
+                            ]}
+                          >
+                            <Input placeholder="Enter Your Email Address" />
+                          </Form.Item>
+                        </Col>
+                      </Row>
+                    </Panel>
+
+                    <Panel
+                      header="Shipping Address"
+                      key="2"
+                      className="site-collapse-custom-panel"
+                    >
+                      <Row gutter={{ xs: 10, sm: 15, md: 10, lg: 24 }}>
+                        <Col span={12} md={12} xs={24}>
+                          <Form.Item
+                            label="Address"
+                            name="address"
+                            rules={[
+                              {
+                                required: true,
+                                message: "Please enter shipping address !",
+                              },
+                            ]}
+                          >
+                            <Input placeholder="House No./Block/Street" />
+                          </Form.Item>
+                        </Col>
+                        <Col span={12} md={12} xs={24}>
+                          <Form.Item
+                            label="Address Line 2"
+                            name="address_two"
+                            rules={[
+                              {
+                                required: false,
+                                message: "Please enter your address",
+                              },
+                            ]}
+                          >
+                            <Input />
+                          </Form.Item>
+                        </Col>
+                        <Col span={12} md={12} xs={24}>
+                          <Form.Item
+                            label="Landmark / Locality"
+                            name="landmark"
+                            rules={[
+                              {
+                                required: false,
+                                message: "Please enter locality!",
+                              },
+                            ]}
+                          >
+                            <Input placeholder="Famous Landmark" />
+                          </Form.Item>
+                        </Col>
+                        <Col span={8} md={8} xs={24}>
+                          <Form.Item
+                            label="City"
+                            name="city"
+                            rules={[
+                              {
+                                required: true,
+                                message: "Please enter your city!",
+                              },
+                            ]}
+                          >
+                            <Input />
+                          </Form.Item>
+                        </Col>
+                        <Col span={4} md={4} xs={8}>
+                          <Form.Item
+                            label="PIN CODE"
+                            name="pincode"
+                            rules={[
+                              {
+                                required: true,
+                                message: "Please enter pincode !",
+                              },
+                            ]}
+                          >
+                            <Input />
+                          </Form.Item>
+                        </Col>
+
+                        <Col span={12} md={12} xs={16}>
+                          <Form.Item
+                            label="State"
+                            name="state"
+                            rules={[
+                              {
+                                required: true,
+                                message: "Please select state!",
+                              },
+                            ]}
+                          >
+                            <Select
+                              showSearch
+                              style={{}}
+                              placeholder="Select State"
+                              optionFilterProp="children"
+                              // onChange={onChange}
+                              // onFocus={onFocus}
+                              // onBlur={onBlur}
+                              // onSearch={onSearch}
+                              filterOption={(input, option) =>
+                                option.children
+                                  .toLowerCase()
+                                  .indexOf(input.toLowerCase()) >= 0
+                              }
+                            >
+                              {stateData.map((city) => (
+                                <Option key={city}>{city}</Option>
+                              ))}
+                            </Select>
+                          </Form.Item>
+                        </Col>
+                        <Col span={12} md={12} xs={24}>
+                          <Form.Item
+                            label="Country"
+                            name="country"
+                            rules={[
+                              {
+                                required: true,
+                                message: "Please enter country !",
+                              },
+                            ]}
+                          >
+                            <Input disabled={true} placeholder="INDIA" />
+                          </Form.Item>
+                        </Col>
+                      </Row>
+                    </Panel>
+                  </Collapse>
                 </Form>
+
+                {/* <h3 className="checkout-title">Billing details</h3> */}
               </Col>
-              <Col span={24} md={16} lg={9} xl={7}>
+              <Col
+                span={24}
+                md={16}
+                lg={9}
+                xl={7}
+                style={{ paddingLeft: "5px", paddingRight: "14px" }}
+              >
                 <div className="checkout-total">
                   <h3 className="checkout-title">Your Order</h3>
                   <div className="checkout-total__table">
@@ -293,10 +355,19 @@ export default function checkout() {
                       <tbody>
                         <tr>
                           <td>
-                            <h5>Shiping</h5>
-                            <p>Shiping to United State</p>
+                            <Radio.Group
+                              name="radiogroup"
+                              defaultValue={"Shipping"}
+                            >
+                              <Radio value="Shipping">Shipping*</Radio>
+                              <Radio value="LocalPickup">
+                                Pick Items @ Store
+                              </Radio>
+                            </Radio.Group>
+                            {/* <h5>Shiping</h5>
+                            <p>Shiping to United State</p> */}
                           </td>
-                          <td>Free</td>
+                          {/* <td>Free</td> */}
                         </tr>
                       </tbody>
                     </table>
@@ -361,7 +432,7 @@ export default function checkout() {
             </div>
           </Container>
         </div>
-        <div className="checkout-sticky">
+        {/* <div className="checkout-sticky">
           <Container>
             <div className="checkout-functions">
               <Button className="checkout-functions--shopping">
@@ -406,7 +477,7 @@ export default function checkout() {
               </Button>
             </div>
           </Container>
-        </div>
+        </div> */}
       </div>
     </LayoutOne>
   );

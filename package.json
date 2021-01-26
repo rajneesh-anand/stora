@@ -10,6 +10,7 @@
     "mg": "prisma migrate dev --preview-feature"
   },
   "dependencies": {
+    "@ant-design/icons": "^4.0.0",
     "@prisma/client": "^2.15.0",
     "@zeit/next-less": "^1.0.1",
     "@zeit/next-sass": "^1.0.1",

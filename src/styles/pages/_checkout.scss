@@ -133,8 +133,9 @@
           .ant-select {
             &-selector {
               height: emCal(16, 45);
-              border-width: 0 0 1px 0;
-              border-right: 0;
+              border-width: 1px;
+              border-color: teal;
+              // border-right: 0;
               border-radius: 0;
               .ant-select-selection-search-input {
                 height: emCal(18, 45);
@@ -144,8 +145,9 @@
                 font-weight: 700;
                 line-height: emCal(18, 45);
                 color: setShadeColor(dark);
-                border-width: 0 0 1px 0;
-                border-right: 0;
+                border-width: 1px;
+                border-color: teal;
+                // border-right: 0;
                 border-radius: 0;
               }
             }
@@ -154,11 +156,12 @@
             &-content {
               input {
                 font-size: emCal(16, 18);
-                font-weight: 700;
+                font-weight: 500;
                 color: setShadeColor(dark);
                 height: emCal(18, 45);
-                border-width: 0 0 1px 0;
-                border-right: 0;
+                border-width: 1px;
+                // border-right: 0;
+                border-color: teal;
                 border-radius: 0;
               }
             }
@@ -169,7 +172,7 @@
   }
   &-total {
     background-color: setColor(light);
-    padding: emCal(16, 40);
+    padding: emCal(42, 40);
     &__table {
       margin-bottom: emCal(16, 50);
       table {

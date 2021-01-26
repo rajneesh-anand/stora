@@ -1,6 +1,9 @@
 import Razorpay from "razorpay";
 import crypto from "crypto";
-export default function handler(req, res) {
+import { PrismaClient } from "@prisma/client";
+
+export default async function handler(req, res) {
+  const prisma = new PrismaClient({ log: ["query"] });
   console.log(req.body);
   try {
     // getting the details back from our font-end
@@ -9,12 +12,13 @@ export default function handler(req, res) {
       razorpayPaymentId,
       razorpayOrderId,
       razorpaySignature,
+      amount,
     } = req.body;
 
     // Creating our own digest
     // The format should be like this:
     // digest = hmac_sha256(orderCreationId + "|" + razorpayPaymentId, secret);
-    const shasum = crypto.createHmac("sha256", "w2lBtgmeuDUfnJVp43UpcaiT");
+    const shasum = crypto.createHmac("sha256", "i97NWuEEmvkSnLGyAKIaXH1i");
 
     shasum.update(`${orderCreationId}|${razorpayPaymentId}`);
 
@@ -28,6 +32,14 @@ export default function handler(req, res) {
 
     // THE PAYMENT IS LEGIT & VERIFIED
     // YOU CAN SAVE THE DETAILS IN YOUR DATABASE IF YOU WANT
+
+    const orders = await prisma.orders.create({
+      data: {
+        orderId: razorpayOrderId,
+        paymentId: razorpayPaymentId,
+        amount: amount,
+      },
+    });
 
     res.json({
       msg: "success",

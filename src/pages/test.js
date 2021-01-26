@@ -33,6 +33,7 @@ export default function test() {
           razorpayPaymentId: response.razorpay_payment_id,
           razorpayOrderId: response.razorpay_order_id,
           razorpaySignature: response.razorpay_signature,
+          amount: amount,
         };
 
         const result = await fetch("/api/success", {

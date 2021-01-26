@@ -61,3 +61,14 @@ model VerificationRequest {
 
   @@map(name: "verification_requests")
 }
+
+model Orders {
+  id         Int      @id @default(autoincrement())
+  orderId    String
+  paymentId  String   @unique
+  createdAt  DateTime @default(now()) @map(name: "created_at")
+  amount      Float   
+
+  @@map(name: "orders")
+}
+
