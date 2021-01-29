@@ -45,6 +45,7 @@ export default async function handler(req, res) {
       msg: "success",
       orderId: razorpayOrderId,
       paymentId: razorpayPaymentId,
+      amount: amount,
     });
   } catch (error) {
     res.status(500).send(error);

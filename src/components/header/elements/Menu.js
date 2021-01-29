@@ -31,15 +31,9 @@ function Menu({ containerType }) {
     setVisible(false);
   };
 
-  const handleSignin = (e) => {
-    e.preventDefault();
-    signIn();
-  };
-
   const content = (
     <div style={{ textAlign: "center" }}>
       <Button onClick={() => signOut()}>Sign Out</Button>
-      <p>Content</p>
     </div>
   );
 
@@ -79,14 +73,22 @@ function Menu({ containerType }) {
                 <Button onClick={showModal}>JOIN</Button>
               ) : (
                 <>
+                  <img
+                    src={session.user.image}
+                    style={{ width: "24px", borderRadius: "50%" }}
+                  />
                   <Popover
                     placement="bottom"
-                    title={session.user.name}
+                    title={session.user.error}
                     content={content}
-                    trigger="click"
+                    trigger="hover"
                     arrowPointAtCenter
                   >
-                    <Button>{session.user.name}</Button>
+                    {!session ? (
+                      <Button onClick={showModal}>JOIN</Button>
+                    ) : (
+                      <Button>{session.user.name}</Button>
+                    )}
                   </Popover>
 
                   {/* <span>{session.user.name}</span>
@@ -117,7 +119,11 @@ function Menu({ containerType }) {
                   }
                   alt=""
                 />
-                <span>{wishlistState.length}</span>
+                {wishlistState.length != 0 ? (
+                  <span>{wishlistState.length}</span>
+                ) : (
+                  ""
+                )}
               </div>
               <div
                 className="menu-function-item"
@@ -199,9 +205,10 @@ function Menu({ containerType }) {
         afterClose={handleCancel}
         onCancel={handleCancel}
         visible={visible}
-        width={850}
+        width={400}
+        centered
+        maskClosable={false}
       >
-        {/* <ShopQuickView setModalVisible={setVisible} data={data} /> */}
         <AuthMenu />
       </Modal>
     </>

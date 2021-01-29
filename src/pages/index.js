@@ -16,7 +16,7 @@ export default function Home() {
     router.query.q
   );
   return (
-    <LayoutOne title="Homepage 1">
+    <LayoutOne title="Blogger" description="Shoes Coat Fan mobile">
       {/* <Banners /> */}
       <ShopLayout
         fourColumn

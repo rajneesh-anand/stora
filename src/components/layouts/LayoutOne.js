@@ -5,6 +5,7 @@ import classNames from "classnames";
 import Header from "../header/Header";
 import Footer from "../footer/Footer";
 import WithHeaderScroll from "../../common/WithHeaderScroll";
+import SEO from "../seo";
 
 const ScrollHeader = WithHeaderScroll(Header);
 
@@ -14,6 +15,7 @@ function LayoutOne({
   containerType,
   children,
   clearSpaceTop,
+  description,
 }) {
   message.config({
     maxCount: 3,
@@ -21,9 +23,10 @@ function LayoutOne({
   });
   return (
     <>
-      <Head>
+      <SEO title={title} description={description} />
+      {/* <Head>
         <title>{title}</title>
-      </Head>
+      </Head> */}
       <ScrollHeader headerStyle={headerStyle} containerType={containerType} />
       <div className={`content ${classNames({ "clear-top": clearSpaceTop })}`}>
         {children}

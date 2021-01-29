@@ -294,6 +294,7 @@ export default function cartReducer(state = initialState, action) {
         { ...cartItem, cartQuantity: cartItem.cartQuantity - 1 },
         ...state.slice(cartItemIndex + 1),
       ];
+
     default:
       return state;
   }

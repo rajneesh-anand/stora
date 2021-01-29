@@ -13,9 +13,13 @@ import { CaretRightOutlined } from "@ant-design/icons";
 import { useState, useCallback, useEffect } from "react";
 import Slider from "react-slick";
 import { useRouter } from "next/router";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import Link from "next/link";
-
+import {
+  checkoutSuccess,
+  checkoutFail,
+} from "../../redux/actions/checkoutAction";
+import { removeAllFromCart } from "../../redux/actions/cartActions";
 import { formatCurrency } from "../../common/utils";
 import { calculateTotalPrice } from "../../common/shopUtils";
 import LayoutOne from "../../components/layouts/LayoutOne";
@@ -47,6 +51,7 @@ export default function checkout() {
   const { Option } = Select;
   const { Panel } = Collapse;
   const router = useRouter();
+  const dispatch = useDispatch();
   const cartState = useSelector((state) => state.cartReducer);
   const globalState = useSelector((state) => state.globalReducer);
   const { currency, locales } = globalState.currency;
@@ -155,11 +160,21 @@ export default function checkout() {
         });
 
         const resultJson = await result.json();
-        console.log(resultJson.msg);
-        router.push({
-          pathname: "/shop/checkout-complete",
-          query: { msg: resultJson.msg },
-        });
+
+        if (resultJson.msg === "success") {
+          dispatch(
+            checkoutSuccess(
+              resultJson.orderId,
+              resultJson.amount,
+              resultJson.msg
+            )
+          );
+          dispatch(removeAllFromCart());
+        } else {
+          dispatch(checkoutFail(resultJson.msg));
+        }
+
+        router.push("/shop/checkout-complete");
       },
       prefill: {
         name: "Soumya Dey",
@@ -241,298 +256,303 @@ export default function checkout() {
   }, [shippingCharge][cartState]);
   return (
     <LayoutOne title="Checkout">
-      <div className="checkout">
-        <div className="checkout-top">
-          <Container>
-            <Row gutter={{ xs: 0, lg: 70 }}>
-              <Col span={24} lg={15} xl={17}>
-                <Form
-                  name="basic"
-                  initialValues={{ remember: true }}
-                  // onFinish={onFinish}
-                  // onFinishFailed={onFinishFailed}
-                  id="checkout-form"
-                  layout="vertical"
-                  className="checkout-form"
-                >
-                  <Collapse
-                    bordered={true}
-                    defaultActiveKey={["1", "2"]}
-                    expandIcon={({ isActive }) => (
-                      <CaretRightOutlined rotate={isActive ? 90 : 0} />
-                    )}
-                    className="site-collapse-custom-collapse"
+      {totalCartValue > shippingCharge ? (
+        <div className="checkout">
+          <div className="checkout-top">
+            <Container>
+              <Row gutter={{ xs: 0, lg: 70 }}>
+                <Col span={24} lg={15} xl={17}>
+                  <Form
+                    name="basic"
+                    initialValues={{ remember: true }}
+                    // onFinish={onFinish}
+                    // onFinishFailed={onFinishFailed}
+                    id="checkout-form"
+                    layout="vertical"
+                    className="checkout-form"
                   >
-                    <Panel
-                      header="Personal Information"
-                      key="1"
-                      className="site-collapse-custom-panel"
-                      disabled={true}
+                    <Collapse
+                      bordered={true}
+                      defaultActiveKey={["1", "2"]}
+                      expandIcon={({ isActive }) => (
+                        <CaretRightOutlined rotate={isActive ? 90 : 0} />
+                      )}
+                      className="site-collapse-custom-collapse"
                     >
-                      <Row gutter={{ xs: 10, sm: 15, md: 10, lg: 24 }}>
-                        <Col span={8} md={8} xs={24}>
-                          <Form.Item
-                            label="Name"
-                            name="name"
-                            rules={[
-                              {
-                                required: true,
-                                message: "Please enter your name !",
-                              },
-                            ]}
-                          >
-                            <Input
+                      <Panel
+                        header="Personal Information"
+                        key="1"
+                        className="site-collapse-custom-panel"
+                        disabled={true}
+                      >
+                        <Row gutter={{ xs: 10, sm: 15, md: 10, lg: 24 }}>
+                          <Col span={8} md={8} xs={24}>
+                            <Form.Item
+                              label="Name"
                               name="name"
-                              onChange={handleChange}
-                              placeholder="Please enter your name !"
-                              value={data.name}
-                            />
-                          </Form.Item>
-                        </Col>
-                        <Col span={6} md={6} xs={24}>
-                          <Form.Item
-                            label="Mobile/Telephone"
-                            name="mobile"
-                            rules={[
-                              {
-                                required: true,
-                                message: "Enter contact number",
-                              },
-                            ]}
-                          >
-                            <Input
-                              name="mobile"
-                              onChange={handleChange}
-                              placeholder="Contact Number"
-                              value={data.mobile}
-                            />
-                          </Form.Item>
-                        </Col>
-                        <Col span={10} md={10} xs={24}>
-                          <Form.Item
-                            label="Email"
-                            name="email"
-                            rules={[
-                              {
-                                required: true,
-                                message: "Please enter email address!",
-                              },
-                            ]}
-                          >
-                            <Input
-                              name="email"
-                              onChange={handleChange}
-                              placeholder="Please enter your email address"
-                              value={data.email}
-                            />
-                          </Form.Item>
-                        </Col>
-                      </Row>
-                    </Panel>
-
-                    <Panel
-                      header="Shipping Address"
-                      key="2"
-                      className="site-collapse-custom-panel"
-                      disabled={true}
-                    >
-                      <Row gutter={{ xs: 10, sm: 15, md: 10, lg: 24 }}>
-                        <Col span={12} md={12} xs={24}>
-                          <Form.Item
-                            label="Address"
-                            name="address"
-                            rules={[
-                              {
-                                required: true,
-                                message: "Please enter shipping address !",
-                              },
-                            ]}
-                          >
-                            <Input
-                              name="address"
-                              onChange={handleChange}
-                              placeholder="House No./Block/Street"
-                              value={data.address}
-                            />
-                          </Form.Item>
-                        </Col>
-                        <Col span={12} md={12} xs={24}>
-                          <Form.Item
-                            label="Address Line 2"
-                            name="address_two"
-                            rules={[
-                              {
-                                required: false,
-                                message: "Please enter your address",
-                              },
-                            ]}
-                          >
-                            <Input
-                              name="address_two"
-                              onChange={handleChange}
-                              value={data.address_two}
-                            />
-                          </Form.Item>
-                        </Col>
-                        <Col span={12} md={12} xs={24}>
-                          <Form.Item
-                            label="Landmark / Locality"
-                            name="landmark"
-                            rules={[
-                              {
-                                required: false,
-                                message: "Please enter locality!",
-                              },
-                            ]}
-                          >
-                            <Input
-                              name="locality"
-                              onChange={handleChange}
-                              placeholder="Famous Landmark"
-                              value={data.locality}
-                            />
-                          </Form.Item>
-                        </Col>
-                        <Col span={8} md={8} xs={24}>
-                          <Form.Item
-                            label="City"
-                            name="city"
-                            rules={[
-                              {
-                                required: true,
-                                message: "Please enter your city!",
-                              },
-                            ]}
-                          >
-                            <Input
-                              name="city"
-                              onChange={handleChange}
-                              value={data.city}
-                            />
-                          </Form.Item>
-                        </Col>
-                        <Col span={4} md={4} xs={8}>
-                          <Form.Item
-                            label="PIN CODE"
-                            name="pincode"
-                            rules={[
-                              {
-                                required: true,
-                                message: "Enter Pincode !",
-                              },
-                            ]}
-                          >
-                            <Input
-                              name="pin"
-                              onChange={handleChange}
-                              value={data.pin}
-                            />
-                          </Form.Item>
-                        </Col>
-
-                        <Col span={12} md={12} xs={16}>
-                          <Form.Item
-                            label="State"
-                            name="state"
-                            rules={[
-                              {
-                                required: true,
-                                message: "Please select state!",
-                              },
-                            ]}
-                          >
-                            <Select
-                              showSearch
-                              style={{}}
-                              placeholder="Select State"
-                              optionFilterProp="children"
-                              onChange={handleState}
-                              onSelect={(value, event) =>
-                                handleState(value, event)
-                              }
-                              // onFocus={onFocus}
-                              // onBlur={onBlur}
-                              // onSearch={onSearch}
-                              filterOption={(input, option) =>
-                                option.children
-                                  .toLowerCase()
-                                  .indexOf(input.toLowerCase()) >= 0
-                              }
+                              rules={[
+                                {
+                                  required: true,
+                                  message: "Please enter your name !",
+                                },
+                              ]}
                             >
-                              {stateData.map((city) => (
-                                <Option key={city} value={city}>
-                                  {city}
-                                </Option>
-                              ))}
-                            </Select>
-                          </Form.Item>
-                        </Col>
-                        <Col span={12} md={12} xs={24}>
-                          <Form.Item
-                            label="Country"
-                            name="country"
-                            rules={[
-                              {
-                                required: false,
-                                message: "Please enter country !",
-                              },
-                            ]}
-                          >
-                            <Input
-                              name="country"
-                              onChange={handleChange}
-                              value={data.country}
-                              placeholder="India"
-                            />
-                          </Form.Item>
-                        </Col>
-                      </Row>
-                    </Panel>
-                  </Collapse>
-                </Form>
+                              <Input
+                                name="name"
+                                onChange={handleChange}
+                                placeholder="Please enter your name !"
+                                value={data.name}
+                              />
+                            </Form.Item>
+                          </Col>
+                          <Col span={6} md={6} xs={24}>
+                            <Form.Item
+                              label="Mobile/Telephone"
+                              name="mobile"
+                              rules={[
+                                {
+                                  required: true,
+                                  message: "Enter contact number",
+                                },
+                              ]}
+                            >
+                              <Input
+                                name="mobile"
+                                onChange={handleChange}
+                                placeholder="Contact Number"
+                                value={data.mobile}
+                              />
+                            </Form.Item>
+                          </Col>
+                          <Col span={10} md={10} xs={24}>
+                            <Form.Item
+                              label="Email"
+                              name="email"
+                              rules={[
+                                {
+                                  required: true,
+                                  message: "Please enter email address!",
+                                },
+                              ]}
+                            >
+                              <Input
+                                name="email"
+                                onChange={handleChange}
+                                placeholder="Please enter your email address"
+                                value={data.email}
+                              />
+                            </Form.Item>
+                          </Col>
+                        </Row>
+                      </Panel>
 
-                {/* <h3 className="checkout-title">Billing details</h3> */}
-              </Col>
-              <Col
-                span={24}
-                md={16}
-                lg={9}
-                xl={7}
-                style={{ paddingLeft: "5px", paddingRight: "14px" }}
-              >
-                <div className="checkout-total">
-                  <h3 className="checkout-title">Your Order</h3>
-                  <div className="checkout-total__table">
-                    <div className="divider" />
-                    <table className="checkout-total__table-calculate">
-                      <thead>
-                        <tr>
-                          <th>Products</th>
-                          <th>Subtoal</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {cartState.map((item, index) => (
-                          <tr key={index}>
-                            <td>
-                              {item.name}
-                              <span> x {item.cartQuantity}</span>
-                            </td>
-                            <td>
-                              {item.discount
-                                ? formatCurrency(
-                                    item.price - item.discount,
-                                    locales,
-                                    currency
-                                  )
-                                : formatCurrency(item.price, locales, currency)}
-                            </td>
+                      <Panel
+                        header="Shipping Address"
+                        key="2"
+                        className="site-collapse-custom-panel"
+                        disabled={true}
+                      >
+                        <Row gutter={{ xs: 10, sm: 15, md: 10, lg: 24 }}>
+                          <Col span={12} md={12} xs={24}>
+                            <Form.Item
+                              label="Address"
+                              name="address"
+                              rules={[
+                                {
+                                  required: true,
+                                  message: "Please enter shipping address !",
+                                },
+                              ]}
+                            >
+                              <Input
+                                name="address"
+                                onChange={handleChange}
+                                placeholder="House No./Block/Street"
+                                value={data.address}
+                              />
+                            </Form.Item>
+                          </Col>
+                          <Col span={12} md={12} xs={24}>
+                            <Form.Item
+                              label="Address Line 2"
+                              name="address_two"
+                              rules={[
+                                {
+                                  required: false,
+                                  message: "Please enter your address",
+                                },
+                              ]}
+                            >
+                              <Input
+                                name="address_two"
+                                onChange={handleChange}
+                                value={data.address_two}
+                              />
+                            </Form.Item>
+                          </Col>
+                          <Col span={12} md={12} xs={24}>
+                            <Form.Item
+                              label="Landmark / Locality"
+                              name="landmark"
+                              rules={[
+                                {
+                                  required: false,
+                                  message: "Please enter locality!",
+                                },
+                              ]}
+                            >
+                              <Input
+                                name="locality"
+                                onChange={handleChange}
+                                placeholder="Famous Landmark"
+                                value={data.locality}
+                              />
+                            </Form.Item>
+                          </Col>
+                          <Col span={8} md={8} xs={24}>
+                            <Form.Item
+                              label="City"
+                              name="city"
+                              rules={[
+                                {
+                                  required: true,
+                                  message: "Please enter your city!",
+                                },
+                              ]}
+                            >
+                              <Input
+                                name="city"
+                                onChange={handleChange}
+                                value={data.city}
+                              />
+                            </Form.Item>
+                          </Col>
+                          <Col span={4} md={4} xs={8}>
+                            <Form.Item
+                              label="PIN CODE"
+                              name="pincode"
+                              rules={[
+                                {
+                                  required: true,
+                                  message: "Enter Pincode !",
+                                },
+                              ]}
+                            >
+                              <Input
+                                name="pin"
+                                onChange={handleChange}
+                                value={data.pin}
+                              />
+                            </Form.Item>
+                          </Col>
+
+                          <Col span={12} md={12} xs={16}>
+                            <Form.Item
+                              label="State"
+                              name="state"
+                              rules={[
+                                {
+                                  required: true,
+                                  message: "Please select state!",
+                                },
+                              ]}
+                            >
+                              <Select
+                                showSearch
+                                style={{}}
+                                placeholder="Select State"
+                                optionFilterProp="children"
+                                onChange={handleState}
+                                onSelect={(value, event) =>
+                                  handleState(value, event)
+                                }
+                                // onFocus={onFocus}
+                                // onBlur={onBlur}
+                                // onSearch={onSearch}
+                                filterOption={(input, option) =>
+                                  option.children
+                                    .toLowerCase()
+                                    .indexOf(input.toLowerCase()) >= 0
+                                }
+                              >
+                                {stateData.map((city) => (
+                                  <Option key={city} value={city}>
+                                    {city}
+                                  </Option>
+                                ))}
+                              </Select>
+                            </Form.Item>
+                          </Col>
+                          <Col span={12} md={12} xs={24}>
+                            <Form.Item
+                              label="Country"
+                              name="country"
+                              rules={[
+                                {
+                                  required: false,
+                                  message: "Please enter country !",
+                                },
+                              ]}
+                            >
+                              <Input
+                                name="country"
+                                onChange={handleChange}
+                                value={data.country}
+                                placeholder="India"
+                              />
+                            </Form.Item>
+                          </Col>
+                        </Row>
+                      </Panel>
+                    </Collapse>
+                  </Form>
+
+                  {/* <h3 className="checkout-title">Billing details</h3> */}
+                </Col>
+                <Col
+                  span={24}
+                  md={16}
+                  lg={9}
+                  xl={7}
+                  style={{ paddingLeft: "5px", paddingRight: "14px" }}
+                >
+                  <div className="checkout-total">
+                    <h3 className="checkout-title">Your Order</h3>
+                    <div className="checkout-total__table">
+                      <div className="divider" />
+                      <table className="checkout-total__table-calculate">
+                        <thead>
+                          <tr>
+                            <th>Products</th>
+                            <th>Subtoal</th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                    <div className="divider" />
-                    {/* <table className="checkout-total__table-subtotal">
+                        </thead>
+                        <tbody>
+                          {cartState.map((item, index) => (
+                            <tr key={index}>
+                              <td>
+                                {item.name}
+                                <span> x {item.cartQuantity}</span>
+                              </td>
+                              <td>
+                                {item.discount
+                                  ? formatCurrency(
+                                      item.price - item.discount,
+                                      locales,
+                                      currency
+                                    )
+                                  : formatCurrency(
+                                      item.price,
+                                      locales,
+                                      currency
+                                    )}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                      <div className="divider" />
+                      {/* <table className="checkout-total__table-subtotal">
                       <tbody>
                         <tr>
                           <td>Subtotal</td>
@@ -546,75 +566,82 @@ export default function checkout() {
                         </tr>
                       </tbody>
                     </table> */}
-                    {/* <div className="divider" /> */}
-                    <table className="checkout-total__table-shiping">
-                      <tbody>
-                        <tr>
-                          <td>
-                            <Radio.Group
-                              name="radiogroup"
-                              defaultValue={"Shipping"}
-                            >
-                              <Radio onClick={handleTotal} value="Shipping">
-                                Shipping*
-                              </Radio>
-                              <Radio onClick={handleTotal} value="LocalPickup">
-                                Pick Items @ Store
-                              </Radio>
-                            </Radio.Group>
-                            {/* <h5>Shiping</h5>
+                      {/* <div className="divider" /> */}
+                      <table className="checkout-total__table-shiping">
+                        <tbody>
+                          <tr>
+                            <td>
+                              <Radio.Group
+                                name="radiogroup"
+                                defaultValue={"Shipping"}
+                              >
+                                <Radio onClick={handleTotal} value="Shipping">
+                                  Shipping*
+                                </Radio>
+                                <Radio
+                                  onClick={handleTotal}
+                                  value="LocalPickup"
+                                >
+                                  Pick Items @ Store
+                                </Radio>
+                              </Radio.Group>
+                              {/* <h5>Shiping</h5>
                             <p>Shiping to United State</p> */}
-                          </td>
-                          {/* <td>Free</td> */}
-                        </tr>
-                      </tbody>
-                    </table>
-                    <div className="divider" />
-                    <table className="checkout-total__table-total">
-                      <tbody>
-                        <tr>
-                          <td>Sub Total</td>
-                          <td>
-                            {formatCurrency(
-                              calculateTotalPrice(cartState),
-                              locales,
-                              currency
-                            )}
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>Shipping Charge</td>
-                          <td>
-                            {shippingCharge > 0
-                              ? formatCurrency(
-                                  shippingCharge,
-                                  locales,
-                                  currency
-                                )
-                              : "FREE"}
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>Total</td>
-                          <td>
-                            {formatCurrency(totalCartValue, locales, currency)}
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <div className="divider" />
-                    <Button
-                      className="checkout-functions--next"
-                      form="checkout-form"
-                      key="submit"
-                      htmlType="submit"
-                      style={{ marginBottom: 0 }}
-                      onClick={handleSubmit}
-                    >
-                      PAY WITH RAZORPAY
-                    </Button>
-                    {/* <button onClick={displayRazorpay}>PAY WITH RAZORPAY</button> */}
-                    {/* <Collapse
+                            </td>
+                            {/* <td>Free</td> */}
+                          </tr>
+                        </tbody>
+                      </table>
+                      <div className="divider" />
+                      <table className="checkout-total__table-total">
+                        <tbody>
+                          <tr>
+                            <td>Sub Total</td>
+                            <td>
+                              {formatCurrency(
+                                calculateTotalPrice(cartState),
+                                locales,
+                                currency
+                              )}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>Shipping Charge</td>
+                            <td>
+                              {shippingCharge > 0
+                                ? formatCurrency(
+                                    shippingCharge,
+                                    locales,
+                                    currency
+                                  )
+                                : "FREE"}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>Total</td>
+                            <td>
+                              {formatCurrency(
+                                totalCartValue,
+                                locales,
+                                currency
+                              )}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <div className="divider" />
+                      <Button
+                        className="checkout-functions--next"
+                        form="checkout-form"
+                        key="submit"
+                        htmlType="submit"
+                        style={{ marginBottom: 0 }}
+                        onClick={handleSubmit}
+                      >
+                        PAY WITH RAZORPAY
+                      </Button>
+                      {/* <button onClick={displayRazorpay}>PAY WITH RAZORPAY</button> */}
+                      {/* <Collapse
                       className="checkout-payment"
                       accordion
                       defaultActiveKey={paymentMethod}
@@ -641,27 +668,27 @@ export default function checkout() {
                         </Panel>
                       ))}
                     </Collapse> */}
+                    </div>
                   </div>
-                </div>
-              </Col>
-            </Row>
-          </Container>
-        </div>
-        <div className="checkout-bottom">
-          <Container>
-            <h5>Discount When Purchased Together</h5>
-            <div className="checkout-related-products">
-              <Slider {...settings}>
-                {productData.slice(0, 8).map((item, index) => (
-                  <div className="slider-item" key={index}>
-                    <Product data={item} />
-                  </div>
-                ))}
-              </Slider>
-            </div>
-          </Container>
-        </div>
-        {/* <div className="checkout-sticky">
+                </Col>
+              </Row>
+            </Container>
+          </div>
+          <div className="checkout-bottom">
+            <Container>
+              <h5>Discount When Purchased Together</h5>
+              <div className="checkout-related-products">
+                <Slider {...settings}>
+                  {productData.slice(0, 8).map((item, index) => (
+                    <div className="slider-item" key={index}>
+                      <Product data={item} />
+                    </div>
+                  ))}
+                </Slider>
+              </div>
+            </Container>
+          </div>
+          {/* <div className="checkout-sticky">
           <Container>
             <div className="checkout-functions">
               <Button className="checkout-functions--shopping">
@@ -707,7 +734,10 @@ export default function checkout() {
             </div>
           </Container>
         </div> */}
-      </div>
+        </div>
+      ) : (
+        <h6>No Cart Value</h6>
+      )}
     </LayoutOne>
   );
 }
