@@ -35,14 +35,6 @@ export default (req, res) =>
       // }),
 
       Providers.Email({
-        // server: {
-        //   host: process.env.SMTP_HOST,
-        //   port: Number(process.env.SMTP_PORT),
-        //   auth: {
-        //     user: process.env.SMTP_USER,
-        //     pass: process.env.SMTP_PASSWORD,
-        //   },
-        // },
         server: process.env.SMTP_SERVER,
         from: process.env.SMTP_FROM,
       }),
@@ -74,20 +66,21 @@ export default (req, res) =>
       error: "/auth/error",
       verifyRequest: "/auth/verify-loginRequest",
     },
+
     adapter: Adapters.Prisma.Adapter({ prisma }),
   });
 
-const login = async (data) => {
-  const baseUrl = "http://localhost:3000";
-  const response = await fetch(baseUrl + "/api/user", {
-    method: "post",
-    headers: {
-      "Content-Type": "application/json; charset=utf-8",
-    },
-    body: JSON.stringify(data),
-  });
+// const login = async (data) => {
+//   const baseUrl = "http://localhost:3000";
+//   const response = await fetch(baseUrl + "/api/user", {
+//     method: "post",
+//     headers: {
+//       "Content-Type": "application/json; charset=utf-8",
+//     },
+//     body: JSON.stringify(data),
+//   });
 
-  const result = await response.json();
-  console.log("result", result);
-  return result;
-};
+//   const result = await response.json();
+//   console.log("result", result);
+//   return result;
+// };

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { signIn, csrfToken, useSession } from "next-auth/client";
+import { signIn, csrfToken } from "next-auth/client";
 import {
   Form,
   Input,
@@ -34,11 +34,14 @@ export default function SignIn({ csrfToken }) {
     }
   };
 
+  const signInGithub = (e) => {
+    signIn("github");
+  };
   return (
     <div className="login_wrapper">
       <h2>Login </h2>
       <div className="social-media">
-        <a onClick={() => signIn("github")} className="fb">
+        <a onClick={signInGithub} className="fb">
           <span className="fab fa-github" aria-hidden="true"></span> Login with
           facebok
         </a>
@@ -48,7 +51,7 @@ export default function SignIn({ csrfToken }) {
         </a>
       </div>
       <div className="login-form-content">
-        <h2>Login with email</h2>
+        <h2>Login with Email</h2>
         <Form
           className="signin-form"
           name="basic"
@@ -94,8 +97,14 @@ export default function SignIn({ csrfToken }) {
           </p> */}
         </Form>
         <h5>
-          By clicking Login, you agree to Cloudinary's Terms of Service and
-          Privacy Policy
+          By clicking Login, you agree to Cloudinary's
+          <span>
+            <a href="http://www.google.com"> Terms of Service </a>
+          </span>
+          &amp;
+          <a target="_blank" href="http://www.google.com">
+            Privacy Policy
+          </a>
         </h5>
       </div>
     </div>

@@ -1,7 +1,7 @@
 .top-nav {
   background-color: setColor(red);
   border-bottom: 1px solid rgba(#fff, 20%);
-  padding: emCal(16, 6) 0;
+  // padding: emCal(16, 6) 0;
   @include mq(md) {
     display: none;
   }

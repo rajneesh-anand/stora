@@ -73,10 +73,6 @@ function Menu({ containerType }) {
                 <Button onClick={showModal}>JOIN</Button>
               ) : (
                 <>
-                  <img
-                    src={session.user.image}
-                    style={{ width: "24px", borderRadius: "50%" }}
-                  />
                   <Popover
                     placement="bottom"
                     title={session.user.error}
@@ -87,7 +83,17 @@ function Menu({ containerType }) {
                     {!session ? (
                       <Button onClick={showModal}>JOIN</Button>
                     ) : (
-                      <Button>{session.user.name}</Button>
+                      <Button>
+                        <img
+                          src={session.user.image}
+                          style={{
+                            width: "24px",
+                            borderRadius: "50%",
+                            marginRight: 5,
+                          }}
+                        />
+                        <span>{session.user.name}</span>
+                      </Button>
                     )}
                   </Popover>
 
@@ -158,7 +164,7 @@ function Menu({ containerType }) {
         onClose={() => setWishlistSidebarOpen(false)}
         closeIcon={
           <>
-            <p>Close</p> <CloseOutlined />
+            <CloseOutlined />
           </>
         }
         visible={wishlistSidebarOpen}
@@ -169,12 +175,12 @@ function Menu({ containerType }) {
       </Drawer>
       <Drawer
         placement="right"
-        title={`Shopping cart (${getTotalProductInCart(cartState)})`}
+        title={`CART ITEM (${getTotalProductInCart(cartState)})`}
         closable={true}
         onClose={() => setCartSidebarOpen(false)}
         closeIcon={
           <>
-            <p>Close</p> <CloseOutlined />
+            <CloseOutlined />
           </>
         }
         visible={cartSidebarOpen}

@@ -29,7 +29,6 @@ const MyApp = ({ Component, pageProps, reduxStore, session }) => {
 MyApp.getServerSideProps = async (context) => {
   // const appProps = await App.getInitialProps(context);
   const session = await getSession(context);
-
   return {
     session,
   };

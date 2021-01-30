@@ -1,10 +1,10 @@
 .content {
-  padding-top: remCal(90);
+  padding-top: remCal(100);
   @include mq(md) {
     padding-top: remCal(150);
   }
   &.clear-top {
-    padding-top: remCal(100);
+    padding-top: remCal(110);
     @include mq(md) {
       padding-top: remCal(50);
     }

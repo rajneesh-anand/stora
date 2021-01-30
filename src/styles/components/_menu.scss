@@ -1,6 +1,6 @@
 .menu {
   background-color: setColor(#000000);
-  padding: emCal(23, 15) 0;
+  padding: emCal(32, 15) 0;
   @include mq(md) {
     margin-bottom: emCal(14, 10);
   }
@@ -114,7 +114,7 @@
         }
         .ant-btn {
           height: emCal(16, 45);
-          background-color: #000;
+          background-color: lighten(#000, 20%);
           border: 0;
           color: #fff;
           border-radius: 0 emCal(16, 5) emCal(16, 5) 0;
@@ -146,7 +146,7 @@
       font-size: emCal(16, 13);
       font-weight: 800;
       text-transform: uppercase;
-      border: 0;
+      border: 1px solid white;
       color: setShadeColor(#fff);
       background-color: setColor(#000000);
       letter-spacing: emCal(13, 1.3);

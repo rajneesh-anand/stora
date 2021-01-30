@@ -71,12 +71,12 @@ function CartSidebarItem({ data }) {
         </div>
         <div className="cart-sidebar-item__close">
           <a href="#" onClick={onRemoveProductFromCart}>
-            <i className="icon_close" />
+            <i className="icon_close_alt2" />
           </a>
         </div>
       </div>
       <Modal
-        title="Cofirm this action"
+        title="Confirm this action"
         visible={visible}
         onOk={handleOk}
         onCancel={handleCancel}

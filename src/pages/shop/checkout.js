@@ -2,7 +2,7 @@ import {
   Form,
   Input,
   Button,
-  Checkbox,
+  Modal,
   Radio,
   Row,
   Col,
@@ -14,7 +14,6 @@ import { useState, useCallback, useEffect } from "react";
 import Slider from "react-slick";
 import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
-import Link from "next/link";
 import {
   checkoutSuccess,
   checkoutFail,
@@ -26,6 +25,10 @@ import LayoutOne from "../../components/layouts/LayoutOne";
 import Container from "../../components/other/Container";
 import productData from "../../data/product.json";
 import Product from "../../components/product/Product";
+
+import dynamic from "next/dynamic";
+import { useSession } from "next-auth/client";
+const AuthMenu = dynamic(() => import("../auth/signin"));
 
 const paymentData = [
   {
@@ -60,6 +63,16 @@ export default function checkout() {
   const [totalCartValue, setTotalCartValue] = useState(
     calculateTotalPrice(cartState)
   );
+  const [visible, setVisible] = useState(false);
+  const [session] = useSession();
+
+  const showModal = () => {
+    setVisible(true);
+  };
+  const handleCancel = (e) => {
+    setVisible(false);
+  };
+  const logo = `http://localhost:3000/assets/images/logo-dark.png`;
   const [data, setData] = useState({
     name: "",
     mobile: "",
@@ -127,7 +140,7 @@ export default function checkout() {
     });
     const order = await result.json();
 
-    console.log(order);
+    // console.log(order);
 
     if (!result) {
       alert("Server error. Are you online?");
@@ -140,9 +153,9 @@ export default function checkout() {
       key: "rzp_test_ZiTzWfVF6kfxi6", // Enter the Key ID generated from the Dashboard
       amount: amount.toString(),
       currency: currency,
-      name: "Soumya Corp.",
+      name: "BLOGGER....",
       description: "Test Transaction",
-      //   image: { logo },
+      image: logo,
       order_id: order_id,
       handler: async function (response) {
         const data = {
@@ -177,12 +190,12 @@ export default function checkout() {
         router.push("/shop/checkout-complete");
       },
       prefill: {
-        name: "Soumya Dey",
-        email: "SoumyaDey@example.com",
-        contact: "9999999999",
+        name: "Name",
+        email: "Email",
+        contact: "Contact",
       },
       notes: {
-        address: "Soumya Dey Corporate Office",
+        address: "Corporate Office",
       },
       theme: {
         color: "#61dafb",
@@ -262,6 +275,7 @@ export default function checkout() {
             <Container>
               <Row gutter={{ xs: 0, lg: 70 }}>
                 <Col span={24} lg={15} xl={17}>
+                  <Button onClick={showModal}>Login</Button>
                   <Form
                     name="basic"
                     initialValues={{ remember: true }}
@@ -273,7 +287,7 @@ export default function checkout() {
                   >
                     <Collapse
                       bordered={true}
-                      defaultActiveKey={["1", "2"]}
+                      defaultActiveKey={["1"]}
                       expandIcon={({ isActive }) => (
                         <CaretRightOutlined rotate={isActive ? 90 : 0} />
                       )}
@@ -283,7 +297,7 @@ export default function checkout() {
                         header="Personal Information"
                         key="1"
                         className="site-collapse-custom-panel"
-                        disabled={true}
+                        // disabled={true}
                       >
                         <Row gutter={{ xs: 10, sm: 15, md: 10, lg: 24 }}>
                           <Col span={8} md={8} xs={24}>
@@ -350,7 +364,7 @@ export default function checkout() {
                         header="Shipping Address"
                         key="2"
                         className="site-collapse-custom-panel"
-                        disabled={true}
+                        // disabled={true}
                       >
                         <Row gutter={{ xs: 10, sm: 15, md: 10, lg: 24 }}>
                           <Col span={12} md={12} xs={24}>
@@ -738,6 +752,17 @@ export default function checkout() {
       ) : (
         <h6>No Cart Value</h6>
       )}
+      <Modal
+        footer={null}
+        afterClose={handleCancel}
+        onCancel={handleCancel}
+        visible={visible}
+        width={400}
+        centered
+        maskClosable={false}
+      >
+        <AuthMenu />
+      </Modal>
     </LayoutOne>
   );
 }
