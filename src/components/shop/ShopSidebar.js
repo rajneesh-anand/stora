@@ -114,7 +114,6 @@ function ShopSidebar({ categories }) {
           {subCategory &&
             subCategory.sub.map((item, index) => (
               <Option key={index} value={item.name}>
-                {" "}
                 <i className={item.iconClass} />
                 {item.name}
               </Option>

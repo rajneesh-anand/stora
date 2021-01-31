@@ -8,6 +8,7 @@ import {
   Col,
   Select,
   Collapse,
+  Typography,
 } from "antd";
 import { CaretRightOutlined } from "@ant-design/icons";
 import { useState, useCallback, useEffect } from "react";
@@ -60,6 +61,8 @@ export default function checkout() {
   const { currency, locales } = globalState.currency;
   const [paymentMethod, setPaymentMethod] = useState("");
   const [shippingCharge, setShippingCharge] = useState(50);
+  const [panelStatus, setPanelStatus] = useState(true);
+  const [activeKey, setActiveKey] = useState();
   const [totalCartValue, setTotalCartValue] = useState(
     calculateTotalPrice(cartState)
   );
@@ -116,11 +119,10 @@ export default function checkout() {
   };
 
   const isValid = () => {
-    const { name, mobile, email, address, city, pin, state } = data;
+    const { name, mobile, address, city, pin, state } = data;
     if (
       name === "" ||
       mobile === "" ||
-      email === "" ||
       address === "" ||
       city === "" ||
       pin === "" ||
@@ -158,21 +160,33 @@ export default function checkout() {
       image: logo,
       order_id: order_id,
       handler: async function (response) {
-        const data = {
+        const orderdata = {
           orderCreationId: order_id,
           razorpayPaymentId: response.razorpay_payment_id,
           razorpayOrderId: response.razorpay_order_id,
           razorpaySignature: response.razorpay_signature,
           amount: amount,
+          name: data.name,
+          email: !session.user.name ? session.user.email : session.user.name,
+          mobile: data.mobile,
+          address: data.address,
+          address_two: data.address_two,
+          locality: data.locality,
+          city: data.city,
+          pin: data.pin,
+          state: data.state,
+          country: data.country,
+          order_status: "order_placed",
         };
 
         const result = await fetch("/api/success", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data),
+          body: JSON.stringify(orderdata),
         });
 
         const resultJson = await result.json();
+        console.log(resultJson);
 
         if (resultJson.msg === "success") {
           dispatch(
@@ -183,11 +197,10 @@ export default function checkout() {
             )
           );
           dispatch(removeAllFromCart());
+          router.push("/shop/checkout-complete");
         } else {
           dispatch(checkoutFail(resultJson.msg));
         }
-
-        router.push("/shop/checkout-complete");
       },
       prefill: {
         name: "Name",
@@ -207,8 +220,6 @@ export default function checkout() {
   }
 
   const handleSubmit = (e) => {
-    // e.preventDefault();
-
     if (isValid()) {
       const body = {
         name: data.name,
@@ -266,6 +277,12 @@ export default function checkout() {
     let shipping = shippingCharge;
     let total = cartTotal + shipping;
     setTotalCartValue(total.toFixed(2));
+    if (!session) {
+      setPanelStatus(true);
+    } else {
+      setPanelStatus(false);
+      setActiveKey("1");
+    }
   }, [shippingCharge][cartState]);
   return (
     <LayoutOne title="Checkout">
@@ -275,7 +292,7 @@ export default function checkout() {
             <Container>
               <Row gutter={{ xs: 0, lg: 70 }}>
                 <Col span={24} lg={15} xl={17}>
-                  <Button onClick={showModal}>Login</Button>
+                  {!session ? <Button onClick={showModal}>Login</Button> : ""}
                   <Form
                     name="basic"
                     initialValues={{ remember: true }}
@@ -286,23 +303,23 @@ export default function checkout() {
                     className="checkout-form"
                   >
                     <Collapse
-                      bordered={true}
-                      defaultActiveKey={["1"]}
+                      bordered={false}
+                      activeKey={[activeKey]}
                       expandIcon={({ isActive }) => (
                         <CaretRightOutlined rotate={isActive ? 90 : 0} />
                       )}
                       className="site-collapse-custom-collapse"
                     >
                       <Panel
-                        header="Personal Information"
+                        header="SHIPPING ADDRESS "
                         key="1"
                         className="site-collapse-custom-panel"
-                        // disabled={true}
+                        disabled={panelStatus}
                       >
                         <Row gutter={{ xs: 10, sm: 15, md: 10, lg: 24 }}>
-                          <Col span={8} md={8} xs={24}>
+                          <Col span={12} md={12} xs={24}>
                             <Form.Item
-                              label="Name"
+                              label="Full Name"
                               name="name"
                               rules={[
                                 {
@@ -319,7 +336,7 @@ export default function checkout() {
                               />
                             </Form.Item>
                           </Col>
-                          <Col span={6} md={6} xs={24}>
+                          <Col span={12} md={12} xs={24}>
                             <Form.Item
                               label="Mobile/Telephone"
                               name="mobile"
@@ -338,35 +355,6 @@ export default function checkout() {
                               />
                             </Form.Item>
                           </Col>
-                          <Col span={10} md={10} xs={24}>
-                            <Form.Item
-                              label="Email"
-                              name="email"
-                              rules={[
-                                {
-                                  required: true,
-                                  message: "Please enter email address!",
-                                },
-                              ]}
-                            >
-                              <Input
-                                name="email"
-                                onChange={handleChange}
-                                placeholder="Please enter your email address"
-                                value={data.email}
-                              />
-                            </Form.Item>
-                          </Col>
-                        </Row>
-                      </Panel>
-
-                      <Panel
-                        header="Shipping Address"
-                        key="2"
-                        className="site-collapse-custom-panel"
-                        // disabled={true}
-                      >
-                        <Row gutter={{ xs: 10, sm: 15, md: 10, lg: 24 }}>
                           <Col span={12} md={12} xs={24}>
                             <Form.Item
                               label="Address"
@@ -388,7 +376,7 @@ export default function checkout() {
                           </Col>
                           <Col span={12} md={12} xs={24}>
                             <Form.Item
-                              label="Address Line 2"
+                              label="Address Line 2 (Optional)"
                               name="address_two"
                               rules={[
                                 {
@@ -406,7 +394,7 @@ export default function checkout() {
                           </Col>
                           <Col span={12} md={12} xs={24}>
                             <Form.Item
-                              label="Landmark / Locality"
+                              label="Landmark / Locality (Optional)"
                               name="landmark"
                               rules={[
                                 {
@@ -418,7 +406,6 @@ export default function checkout() {
                               <Input
                                 name="locality"
                                 onChange={handleChange}
-                                placeholder="Famous Landmark"
                                 value={data.locality}
                               />
                             </Form.Item>
@@ -448,7 +435,7 @@ export default function checkout() {
                               rules={[
                                 {
                                   required: true,
-                                  message: "Enter Pincode !",
+                                  message: "Postal code !",
                                 },
                               ]}
                             >
@@ -531,16 +518,16 @@ export default function checkout() {
                   style={{ paddingLeft: "5px", paddingRight: "14px" }}
                 >
                   <div className="checkout-total">
-                    <h3 className="checkout-title">Your Order</h3>
+                    <h3 className="checkout-title">YOUR ORDER</h3>
                     <div className="checkout-total__table">
                       <div className="divider" />
                       <table className="checkout-total__table-calculate">
-                        <thead>
+                        {/* <thead>
                           <tr>
                             <th>Products</th>
                             <th>Subtoal</th>
                           </tr>
-                        </thead>
+                        </thead> */}
                         <tbody>
                           {cartState.map((item, index) => (
                             <tr key={index}>

@@ -13,6 +13,17 @@ export default async function handler(req, res) {
       razorpayOrderId,
       razorpaySignature,
       amount,
+      name,
+      email,
+      mobile,
+      address,
+      address_two,
+      locality,
+      city,
+      pin,
+      state,
+      country,
+      order_status,
     } = req.body;
 
     // Creating our own digest
@@ -25,6 +36,7 @@ export default async function handler(req, res) {
     const digest = shasum.digest("hex");
 
     console.log(digest);
+    console.log(razorpaySignature);
 
     // comaparing our digest with the actual signature
     if (digest !== razorpaySignature)
@@ -33,11 +45,22 @@ export default async function handler(req, res) {
     // THE PAYMENT IS LEGIT & VERIFIED
     // YOU CAN SAVE THE DETAILS IN YOUR DATABASE IF YOU WANT
 
-    const orders = await prisma.orders.create({
+    const result = await prisma.orders.create({
       data: {
         orderId: razorpayOrderId,
         paymentId: razorpayPaymentId,
+        name: name,
+        email: email,
+        mobile: mobile,
+        addressOne: address,
+        addressTwo: address_two,
+        locality: locality,
+        city: city,
+        pin: pin,
+        state: state,
+        country: country,
         amount: amount,
+        orderStatus: order_status,
       },
     });
 

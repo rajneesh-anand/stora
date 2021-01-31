@@ -24,6 +24,8 @@ function Menu({ containerType }) {
   const [visible, setVisible] = useState(false);
   const [session] = useSession();
 
+  const logo = `http://localhost:3000/fav.png`;
+
   const showModal = () => {
     setVisible(true);
   };
@@ -84,15 +86,31 @@ function Menu({ containerType }) {
                       <Button onClick={showModal}>JOIN</Button>
                     ) : (
                       <Button>
-                        <img
-                          src={session.user.image}
-                          style={{
-                            width: "24px",
-                            borderRadius: "50%",
-                            marginRight: 5,
-                          }}
-                        />
-                        <span>{session.user.name}</span>
+                        {!session.user.name ? (
+                          <>
+                            <img
+                              src={logo}
+                              style={{
+                                width: "24px",
+                                borderRadius: "50%",
+                                marginRight: 5,
+                              }}
+                            />
+                            <span>{session.user.email.split("@", 1)}</span>
+                          </>
+                        ) : (
+                          <>
+                            <img
+                              src={session.user.image}
+                              style={{
+                                width: "24px",
+                                borderRadius: "50%",
+                                marginRight: 5,
+                              }}
+                            />
+                            <span>{session.user.name}</span>
+                          </>
+                        )}
                       </Button>
                     )}
                   </Popover>

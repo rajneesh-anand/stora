@@ -67,7 +67,18 @@ model Orders {
   orderId    String
   paymentId  String   @unique
   createdAt  DateTime @default(now()) @map(name: "created_at")
-  amount      Float   
+  amount     Float   
+  name       String
+  email      String
+  mobile     String
+  addressOne String
+  addressTwo String
+  locality   String
+  city       String
+  pin        String
+  state      String
+  country    String        
+  orderStatus String
 
   @@map(name: "orders")
 }
