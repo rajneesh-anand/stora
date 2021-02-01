@@ -13,11 +13,27 @@ import { signIn, getSession, useSession } from "next-auth/client";
 
 function checkoutComplete() {
   const router = useRouter();
-  const [session] = useSession();
+  const [session, loading] = useSession();
 
   const checkoutState = useSelector((state) => state.checkoutReducer);
 
-  if (!session) {
+  const mailer_data = {
+    email: "anand.k.rajneesh@gmail.com",
+    subject: "Your Order has been placed",
+  };
+
+  const sendOrderMail = async () => {
+    const result = await fetch("/api/mailer", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(mailer_data),
+    });
+
+    const resultJson = await result.json();
+    console.log(resultJson);
+  };
+
+  if (!loading && !session) {
     router.push("/");
     return null;
   }
@@ -85,6 +101,7 @@ function checkoutComplete() {
         <Link href="/">
           <a>KEEP SHOPING</a>
         </Link>
+        <Button onClick={sendOrderMail}>Send mail</Button>
       </Container>
     </LayoutOne>
   );

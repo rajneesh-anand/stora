@@ -7,6 +7,7 @@ const prisma = new PrismaClient();
 
 export default (req, res) =>
   NextAuth(req, res, {
+    site: process.env.NEXTAUTH_URL || "http://localhost:3000",
     providers: [
       // Providers.Credentials({
       //   authorize: async (credentials) => {
@@ -44,8 +45,8 @@ export default (req, res) =>
         clientSecret: process.env.GITHUB_CLIENT_SECRET,
       }),
       Providers.Google({
-        clientId: process.env.GOOGLE_CLIENT_ID,
-        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        clientId: process.env.MAILING_SERVICE_CLIENT_ID,
+        clientSecret: process.env.MAILING_SERVICE_CLIENT_SECRET,
       }),
       Providers.Facebook({
         clientId: process.env.FACEBOOK_CLIENT_ID,
@@ -66,6 +67,11 @@ export default (req, res) =>
       error: "/auth/error",
       verifyRequest: "/auth/verify-loginRequest",
     },
+    // callbacks: {
+    //   async redirect(url, baseUrl) {
+    //     return url.startsWith(baseUrl) ? url : baseUrl;
+    //   },
+    // },
 
     adapter: Adapters.Prisma.Adapter({ prisma }),
   });

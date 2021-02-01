@@ -335,8 +335,8 @@ p {
     display: block;
     text-align: center;
     padding: 10px;
-    font-size: 16px;
-    font-weight: 600;
+    font-size: 17px;
+    font-weight: 500;
     margin-bottom: 10px;
     background: #eee;
     // border-radius: 35px;
@@ -352,7 +352,7 @@ p {
     border: none;
     // padding: 10px;
     font-size: 16px;
-    font-weight: 600;
+    font-weight: 500;
     margin-bottom: 10px;
     span {
       margin-right: 8px;
@@ -363,6 +363,27 @@ p {
     color: #fff;
     &:hover {
       background: #314e8a;
+    }
+  }
+  a.gg {
+    .fa-google {
+      background: conic-gradient(
+          from -45deg,
+          #ea4335 110deg,
+          #4285f4 90deg 180deg,
+          #34a853 180deg 270deg,
+          #fbbc05 270deg
+        )
+        73% 55%/150% 150% no-repeat;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+    }
+    background: #1da1f2;
+    color: #fff;
+    &:hover {
+      background: #1091e1;
     }
   }
   a.fb {

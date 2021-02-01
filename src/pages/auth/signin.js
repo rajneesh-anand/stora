@@ -34,24 +34,25 @@ export default function SignIn({ csrfToken }) {
     }
   };
 
-  const signInGithub = (e) => {
-    signIn("github");
-  };
   return (
     <div className="login_wrapper">
       <h2>Login </h2>
       <div className="social-media">
-        <a onClick={signInGithub} className="fb">
-          <span className="fab fa-github" aria-hidden="true"></span> Login with
-          facebok
+        <a onClick={() => signIn("google")} className="gg">
+          <span className="fab fa-google fa-lg" aria-hidden="true"></span> Login
+          with Google
         </a>
-        <a href="#twitter" className="tw">
-          <span className="fab fa-twitter" aria-hidden="true"></span> Login with
-          twitter
+        <a onClick={() => signIn("facebook")} className="fb">
+          <span className="fab fa-facebook fa-lg" aria-hidden="true"></span>{" "}
+          Login with Facebook
+        </a>
+        <a onClick={() => signIn("github")} className="gh">
+          <span className="fab fa-github" aria-hidden="true"></span> Login with
+          GitHub
         </a>
       </div>
       <div className="login-form-content">
-        <h2>Login with Email</h2>
+        {/* <h2>Login with Email</h2> */}
         <Form
           className="signin-form"
           name="basic"
@@ -92,9 +93,6 @@ export default function SignIn({ csrfToken }) {
               with Email
             </Button>
           </div>
-          {/* <p className="already">
-            Don't have an account? <a>Sign up</a>
-          </p> */}
         </Form>
         <h5>
           By clicking Login, you agree to Cloudinary's
