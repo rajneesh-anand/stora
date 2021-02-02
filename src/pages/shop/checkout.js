@@ -152,7 +152,7 @@ export default function checkout() {
     const { amount, id: order_id, currency } = order;
 
     const options = {
-      key: "rzp_test_ZiTzWfVF6kfxi6", // Enter the Key ID generated from the Dashboard
+      key: "rzp_test_izUIYNmO8F2EMo", // Enter the Key ID generated from the Dashboard
       amount: amount.toString(),
       currency: currency,
       name: "BLOGGER....",
