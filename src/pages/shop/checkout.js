@@ -157,7 +157,7 @@ export default function checkout() {
       currency: currency,
       name: "BLOGGER....",
       description: "Test Transaction",
-      image: process.env.NEXTAUTH_URL + "/assets/images/logo-dark.png",
+      image: "https://stora-eight.vercel.app/assets/images/logo-dark.png",
       order_id: order_id,
       handler: async function (response) {
         const orderdata = {
