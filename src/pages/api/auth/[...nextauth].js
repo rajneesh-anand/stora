@@ -7,7 +7,6 @@ const prisma = new PrismaClient();
 
 export default (req, res) =>
   NextAuth(req, res, {
-    site: process.env.NEXTAUTH_URL || "http://localhost:3000",
     providers: [
       // Providers.Credentials({
       //   authorize: async (credentials) => {

@@ -53,6 +53,28 @@ CREATE TABLE "verification_requests" (
     PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "orders" (
+    "id" SERIAL NOT NULL,
+    "orderId" TEXT NOT NULL,
+    "paymentId" TEXT NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "amount" DECIMAL(65,30) NOT NULL,
+    "name" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "mobile" TEXT NOT NULL,
+    "addressOne" TEXT NOT NULL,
+    "addressTwo" TEXT NOT NULL,
+    "locality" TEXT NOT NULL,
+    "city" TEXT NOT NULL,
+    "pin" TEXT NOT NULL,
+    "state" TEXT NOT NULL,
+    "country" TEXT NOT NULL,
+    "orderStatus" TEXT NOT NULL,
+
+    PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "accounts.compound_id_unique" ON "accounts"("compound_id");
 
@@ -76,3 +98,6 @@ CREATE UNIQUE INDEX "users.email_unique" ON "users"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "verification_requests.token_unique" ON "verification_requests"("token");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "orders.paymentId_unique" ON "orders"("paymentId");
