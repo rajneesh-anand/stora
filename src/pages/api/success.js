@@ -29,7 +29,7 @@ export default async function handler(req, res) {
     // Creating our own digest
     // The format should be like this:
     // digest = hmac_sha256(orderCreationId + "|" + razorpayPaymentId, secret);
-    const shasum = crypto.createHmac("sha256", "i97NWuEEmvkSnLGyAKIaXH1i");
+    const shasum = crypto.createHmac("sha256", "GqawpZHXIFvf2GmsRN9gm66s");
 
     shasum.update(`${orderCreationId}|${razorpayPaymentId}`);
 
