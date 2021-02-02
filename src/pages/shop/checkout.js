@@ -75,7 +75,7 @@ export default function checkout() {
   const handleCancel = (e) => {
     setVisible(false);
   };
-  const logo = `${process.env.NEXTAUTH_URL}/assets/images/logo-dark.png`;
+  
   const [data, setData] = useState({
     name: "",
     mobile: "",
@@ -157,7 +157,7 @@ export default function checkout() {
       currency: currency,
       name: "BLOGGER....",
       description: "Test Transaction",
-      image: ,
+      image: process.env.NEXTAUTH_URL + "/assets/images/logo-dark.png",
       order_id: order_id,
       handler: async function (response) {
         const orderdata = {
