@@ -314,7 +314,7 @@ export default function checkout() {
       setPanelStatus(false);
       setActiveKey("1");
     }
-  }, [shippingCharge]);
+  }, [shippingCharge][session]);
   return (
     <LayoutOne title="Checkout">
       {totalCartValue > shippingCharge ? (
@@ -324,28 +324,28 @@ export default function checkout() {
               <Row gutter={{ xs: 0, lg: 70 }}>
                 <Col span={24} lg={15} xl={17}>
                   {!session ? <Button onClick={showModal}>Login</Button> : ""}
-                  <Form
-                    name="basic"
-                    initialValues={{ remember: true }}
-                    // onFinish={onFinish}
-                    // onFinishFailed={onFinishFailed}
-                    id="checkout-form"
-                    layout="vertical"
-                    className="checkout-form"
+                  <Collapse
+                    bordered={false}
+                    activeKey={[activeKey]}
+                    expandIcon={({ isActive }) => (
+                      <CaretRightOutlined rotate={isActive ? 90 : 0} />
+                    )}
+                    className="site-collapse-custom-collapse"
                   >
-                    <Collapse
-                      bordered={false}
-                      activeKey={[activeKey]}
-                      expandIcon={({ isActive }) => (
-                        <CaretRightOutlined rotate={isActive ? 90 : 0} />
-                      )}
-                      className="site-collapse-custom-collapse"
+                    <Panel
+                      header="SHIPPING ADDRESS "
+                      key="1"
+                      className="site-collapse-custom-panel"
+                      disabled={panelStatus}
                     >
-                      <Panel
-                        header="SHIPPING ADDRESS "
-                        key="1"
-                        className="site-collapse-custom-panel"
-                        disabled={panelStatus}
+                      <Form
+                        name="basic"
+                        initialValues={{ remember: true }}
+                        // onFinish={onFinish}
+                        // onFinishFailed={onFinishFailed}
+                        id="checkout-form"
+                        layout="vertical"
+                        className="checkout-form"
                       >
                         <Row gutter={{ xs: 10, sm: 15, md: 10, lg: 24 }}>
                           <Col span={12} md={12} xs={24}>
@@ -535,11 +535,9 @@ export default function checkout() {
                             </Form.Item>
                           </Col>
                         </Row>
-                      </Panel>
-                    </Collapse>
-                  </Form>
-
-                  {/* <h3 className="checkout-title">Billing details</h3> */}
+                      </Form>
+                    </Panel>
+                  </Collapse>
                 </Col>
                 <Col
                   span={24}
