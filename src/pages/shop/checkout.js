@@ -79,7 +79,6 @@ export default function checkout() {
   const handleCancel = (e) => {
     setVisible(false);
   };
-
   const [data, setData] = useState({
     name: "",
     mobile: "",
