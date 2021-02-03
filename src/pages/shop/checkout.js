@@ -67,6 +67,10 @@ export default function checkout() {
     calculateTotalPrice(cartState)
   );
   const [visible, setVisible] = useState(false);
+  const [txToken, setToken] = useState(undefined);
+  const [mid, setMid] = useState(undefined);
+  const [orderId, setOrderId] = useState(undefined);
+  const [gotRes, setGotRes] = useState(false);
   const [session] = useSession();
 
   const showModal = () => {
@@ -75,7 +79,7 @@ export default function checkout() {
   const handleCancel = (e) => {
     setVisible(false);
   };
-  const logo = `http://localhost:3000/assets/images/logo-dark.png`;
+
   const [data, setData] = useState({
     name: "",
     mobile: "",
@@ -118,6 +122,33 @@ export default function checkout() {
     ],
   };
 
+  const handlePaytmSubmit = async (e) => {
+    e.preventDefault();
+
+    let data = {
+      custId: "CUSTD1234",
+      mobile: "77777777 777777",
+      email: "test@test.com",
+    };
+
+    fetch("/api/paynow", {
+      method: "POST",
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setToken(data.token);
+        setMid(data.mid);
+        setOrderId(data.orderId);
+        setGotRes(true);
+        document.getElementById("redFrom").submit();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   const isValid = () => {
     const { name, mobile, address, city, pin, state } = data;
     if (
@@ -152,12 +183,12 @@ export default function checkout() {
     const { amount, id: order_id, currency } = order;
 
     const options = {
-      key: "rzp_test_ZiTzWfVF6kfxi6", // Enter the Key ID generated from the Dashboard
+      key: "rzp_test_izUIYNmO8F2EMo", // Enter the Key ID generated from the Dashboard
       amount: amount.toString(),
       currency: currency,
       name: "BLOGGER....",
       description: "Test Transaction",
-      image: logo,
+      image: "http://localhost:3000/assets/images/logo-dark.png",
       order_id: order_id,
       handler: async function (response) {
         const orderdata = {
@@ -177,6 +208,7 @@ export default function checkout() {
           state: data.state,
           country: data.country,
           order_status: "order_placed",
+          items_placed: cartState,
         };
 
         const result = await fetch("/api/success", {
@@ -283,7 +315,7 @@ export default function checkout() {
       setPanelStatus(false);
       setActiveKey("1");
     }
-  }, [shippingCharge][cartState]);
+  }, [shippingCharge]);
   return (
     <LayoutOne title="Checkout">
       {totalCartValue > shippingCharge ? (
@@ -641,6 +673,8 @@ export default function checkout() {
                       >
                         PAY WITH RAZORPAY
                       </Button>
+                      <Button onClick={handlePaytmSubmit}>paytm</Button>
+                      <Hiddenfrom mid={mid} orderId={orderId} token={txToken} />
                       {/* <button onClick={displayRazorpay}>PAY WITH RAZORPAY</button> */}
                       {/* <Collapse
                       className="checkout-payment"
@@ -753,3 +787,25 @@ export default function checkout() {
     </LayoutOne>
   );
 }
+
+const Hiddenfrom = (props) => {
+  return (
+    <div>
+      <form
+        id="redFrom"
+        method="post"
+        action={
+          "https://securegw-stage.paytm.in/theia/api/v1/showPaymentPage?mid=" +
+          props.mid +
+          "&orderId=" +
+          props.orderId
+        }
+        name="paytm"
+      >
+        <input type="hidden" name="mid" value={props.mid} />
+        <input type="hidden" name="orderId" value={props.orderId} />
+        <input type="hidden" name="txnToken" value={props.token} />
+      </form>
+    </div>
+  );
+};

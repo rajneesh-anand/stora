@@ -1,5 +1,9 @@
 .shop-layout {
   margin-bottom: remCal(70);
+  margin-top: remCal(40);
+  @include mq(md) {
+    margin-top: remCal(0);
+  }
   .shop {
     &-sidebar {
       margin-bottom: 40px;
@@ -17,26 +21,26 @@
           display: flex;
           justify-content: center;
 
+          a {
+            @include link(
+              $hvr-color: setShadeColor(dark),
+              $up: true,
+              $fw: 500,
+              $color: setShadeColor(light)
+            );
+            i {
+              font-size: 54px;
+            }
+          }
+
           li {
-            // margin-bottom: emCal(16, 18);
-            padding: 10px 10px;
+            padding: 5px 5px;
             border: 2px solid gray;
-            border-radius: 25%;
+            // border-radius: 25%;
             margin-left: 10px;
             margin-right: 10px;
-            &:hover {
-              a {
-                color: setShadeColor(dark);
-              }
-            }
-
-            &:last-child {
-              margin-bottom: 0;
-            }
             &.active {
-              a {
-                color: setShadeColor(red);
-              }
+              color: setShadeColor(red);
             }
 
             ul {
@@ -45,20 +49,8 @@
               li {
                 border: none;
                 border-radius: 0;
-                padding: 0;
+                padding: 1px;
               }
-            }
-            a {
-              i {
-                // margin-right: emCal(16, 15);
-                font-size: 54px;
-              }
-              @include link(
-                $hvr-color: setShadeColor(dark),
-                $up: true,
-                $fw: 500,
-                $color: setShadeColor(light)
-              );
             }
           }
         }

@@ -67,8 +67,10 @@ export default async function handler(req, res) {
         smtpTransport.sendMail(mailOptions, (err, info) => {
           if (err) {
             res.json({ message: "email failed !", error: err });
+            res.end();
           } else {
             res.json({ message: "email sent successfully", info: info });
+            res.end();
           }
         });
       } catch (error) {

@@ -19,6 +19,7 @@
     "classnames": "^2.2.6",
     "crypto": "^1.0.1",
     "googleapis": "^67.0.0",
+    "https": "^1.0.0",
     "less": "^3.12.2",
     "next": "10.0.5",
     "next-auth": "^3.2.0-canary.35",
@@ -37,6 +38,7 @@
     "redux-thunk": "^2.3.0",
     "sass": "^1.26.10",
     "slick-carousel": "^1.8.1",
+    "urlencoded-body-parser": "^3.0.0",
     "uuid": "^8.3.0"
   },
   "devDependencies": {

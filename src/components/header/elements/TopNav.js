@@ -46,6 +46,14 @@ function TopNav({ containerType }) {
           </div>
           <div className="top-nav-links">
             <div className="top-nav-links__item">
+              <Link href={process.env.PUBLIC_URL + "/storelocator"}>
+                <a>
+                  <i className="icon_pin_alt" />
+                  Store Location
+                </a>
+              </Link>
+            </div>
+            <div className="top-nav-links__item">
               <Link href={process.env.PUBLIC_URL + "/help"}>
                 <a>
                   <i className="icon_question_alt2" />

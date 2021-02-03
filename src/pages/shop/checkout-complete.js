@@ -3,6 +3,8 @@ import classNames from "classnames";
 import Slider from "react-slick";
 import { useRouter, withRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
+import react, { useState } from "react";
+import parse from "urlencoded-body-parser";
 
 import Link from "next/link";
 
@@ -11,11 +13,12 @@ import Container from "../../components/other/Container";
 import { formatCurrency } from "../../common/utils";
 import { signIn, getSession, useSession } from "next-auth/client";
 
-function checkoutComplete() {
+export default function checkoutComplete({ rData }) {
   const router = useRouter();
   const [session, loading] = useSession();
 
   const checkoutState = useSelector((state) => state.checkoutReducer);
+  console.log(rData);
 
   const mailer_data = {
     email: "anand.k.rajneesh@gmail.com",
@@ -107,16 +110,18 @@ function checkoutComplete() {
   );
 }
 
-// export async function getServerSideProps(context) {
-//   const session = await getSession(context);
+export async function getServerSideProps(context) {
+  const session = await getSession(context);
+  const { req } = context;
+  const data = await parse(req);
 
-//   if (!session) {
-//     context.res.writeHead(302, { Location: "/" });
-//     context.res.end();
-//   }
-//   return {
-//     props: { session },
-//   };
-// }
-
-export default checkoutComplete;
+  return {
+    props: { rData: data },
+  };
+}
+// checkoutComplete.getInitialProps = async (ctx) => {
+//   const { req } = ctx;
+//   const data = await parse(req);
+//   console.log(data);
+//   return { responsedata: data };
+// };

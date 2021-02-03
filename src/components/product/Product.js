@@ -132,7 +132,7 @@ function Product({ data, productStyle }) {
                   type="text"
                   onClick={() => onAddToCart(data)}
                 >
-                  <i className="icon_bag_alt" />
+                  <i className="icon_plus" />
                 </Button>
               </Tooltip>
             </div>
@@ -198,7 +198,7 @@ function Product({ data, productStyle }) {
                   shape="circle"
                   onClick={() => onAddToCart(data)}
                 >
-                  <i className="icon_bag_alt" />
+                  <i className="icon_plus" />
                 </Button>
               </Tooltip>
             ) : null}
@@ -235,7 +235,7 @@ function Product({ data, productStyle }) {
                     shape="circle"
                     onClick={() => onAddToCart(data)}
                   >
-                    <i className="icon_bag_alt" />
+                    <i className="icon_plus" />
                   </Button>
                 </Tooltip>
               </div>

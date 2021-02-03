@@ -77,7 +77,11 @@ model Orders {
   city       String
   pin        String
   state      String
-  country    String        
+  country    String 
+  items      Json[]
+  
+
+
   orderStatus String
 
   @@map(name: "orders")

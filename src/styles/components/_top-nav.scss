@@ -31,10 +31,10 @@
   }
   &-links {
     display: flex;
+
     &__item {
-      &:first-child {
-        margin-right: emCal(16, 30);
-      }
+      margin-left: emCal(16, 30);
+
       a {
         @include link(
           $fsz: emCal(16, 15),

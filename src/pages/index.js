@@ -17,7 +17,7 @@ export default function Home() {
   );
   return (
     <LayoutOne title="Blogger" description="Shoes Coat Fan mobile">
-      {/* <Banners /> */}
+      <Banners />
       <ShopLayout
         fourColumn
         shopSidebarResponsive={{ xs: 24, lg: 25 }}

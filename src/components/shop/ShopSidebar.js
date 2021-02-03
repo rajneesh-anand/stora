@@ -30,73 +30,50 @@ function ShopSidebar({ categories }) {
       {/* <h5>{globalState.category}</h5> */}
       <div className="shop-sidebar__subcategory">
         <ul>
-          <li
-            className={classNames({
-              active: shopState.subCategory === "",
-            })}
-          >
-            <ul>
-              <li>
-                <Link href="">
-                  <a
-                    onClick={(e) => {
-                      e.preventDefault();
-                      onChooseSubCategory("all");
-                    }}
-                  >
-                    <i className="icon_document_alt" />
-                  </a>
-                </Link>
-              </li>
-              <li>
-                <Link href="">
-                  <a
-                    onClick={(e) => {
-                      e.preventDefault();
-                      onChooseSubCategory("all");
-                    }}
-                  >
-                    All
-                  </a>
-                </Link>
-              </li>
-            </ul>
-          </li>
-          {subCategory &&
-            subCategory.sub.slice(0, 7).map((item, index) => (
+          <Link href="">
+            <a
+              onClick={(e) => {
+                e.preventDefault();
+                onChooseSubCategory("all");
+              }}
+            >
               <li
-                key={index}
                 className={classNames({
-                  active: shopState.subCategory === item.name,
+                  active: shopState.subCategory === "",
                 })}
               >
                 <ul>
                   <li>
-                    <Link href="#">
-                      <a
-                        onClick={(e) => {
-                          e.preventDefault();
-                          onChooseSubCategory(item.name);
-                        }}
-                      >
-                        <i className={item.iconClass} />
-                      </a>
-                    </Link>
+                    <i className="icon_menu" />
                   </li>
-                  <li>
-                    <Link href="#">
-                      <a
-                        onClick={(e) => {
-                          e.preventDefault();
-                          onChooseSubCategory(item.name);
-                        }}
-                      >
-                        {item.name}
-                      </a>
-                    </Link>
-                  </li>
+                  <li>All</li>
                 </ul>
               </li>
+            </a>
+          </Link>
+          {subCategory &&
+            subCategory.sub.slice(0, 7).map((item, index) => (
+              <Link href="" key={index}>
+                <a
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onChooseSubCategory(item.name);
+                  }}
+                >
+                  <li
+                    className={classNames({
+                      active: shopState.subCategory === item.name,
+                    })}
+                  >
+                    <ul>
+                      <li>
+                        <i className={item.iconClass} />
+                      </li>
+                      <li>{item.name}</li>
+                    </ul>
+                  </li>
+                </a>
+              </Link>
             ))}
         </ul>
       </div>

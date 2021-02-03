@@ -1,10 +1,12 @@
 .banners {
-  margin-bottom: remCal(70);
+  // margin-bottom: remCal(70);
+  margin-top: remCal(40);
   .banner-item {
     display: block;
     overflow: hidden;
     @include mq(sm) {
       margin-bottom: emCal(14, 15);
+      margin-top: remCal(1);
     }
     &:hover {
       img {
