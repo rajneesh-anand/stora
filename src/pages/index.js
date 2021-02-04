@@ -1,11 +1,11 @@
 import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
-
 import Banners from "../components/shop/Banners";
 import LayoutOne from "../components/layouts/LayoutOne";
 import ShopLayout from "../components/shop/ShopLayout";
 import productData from "../data/product.json";
 import useProductData from "../common/useProductData";
+import React, { useEffect } from "react";
 
 export default function Home() {
   const router = useRouter();
@@ -15,6 +15,12 @@ export default function Home() {
     globalState.category,
     router.query.q
   );
+
+  useEffect(() => {
+    const timer = setTimeout(() => console.log("Hello, World!"), 8000);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <LayoutOne title="Blogger" description="Shoes Coat Fan mobile">
       <Banners />

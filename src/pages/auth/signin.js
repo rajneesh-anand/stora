@@ -51,10 +51,10 @@ export default function SignIn({ csrfToken }) {
           GitHub
         </a>
       </div>
-      <div className="login-form-content">
-        {/* <h2>Login with Email</h2> */}
+      <div className="divider" />
+      <div className="login-form">
         <Form
-          className="signin-form"
+          // className="signin-form"
           name="basic"
           initialValues={{ remember: true }}
           id="login-form"
@@ -63,7 +63,7 @@ export default function SignIn({ csrfToken }) {
           action="/api/auth/signin/email"
         >
           <input name="csrfToken" type="hidden" defaultValue={csrfToken} />
-          <div className="one-frm">
+          <div>
             <Input
               type="email"
               name="email"
@@ -73,7 +73,7 @@ export default function SignIn({ csrfToken }) {
               value={email}
             />
           </div>
-          {/* <div className="one-frm">
+          {/* <div>
             <Input
               type="password"
               name="Password"
@@ -82,29 +82,25 @@ export default function SignIn({ csrfToken }) {
             />
           </div> */}
 
-          <div className="social-media">
-            <Button
-              form="login-form"
-              key="submit"
-              htmlType="submit"
-              onClick={handleSubmit}
-            >
-              <span className="fas fa-envelope" aria-hidden="true"></span> Login
-              with Email
-            </Button>
-          </div>
-        </Form>
-        <h5>
-          By clicking Login, you agree to Cloudinary's
-          <span>
-            <a href="http://www.google.com"> Terms of Service </a>
-          </span>
-          &amp;
-          <a target="_blank" href="http://www.google.com">
-            Privacy Policy
+          <a
+            form="login-form"
+            key="submit"
+            onClick={handleSubmit}
+            className="email"
+          >
+            <span className="fas fa-envelope fa-lg" aria-hidden="true"></span>{" "}
+            Login with Email
           </a>
-        </h5>
+        </Form>
       </div>
+      <h5>
+        By Login, you agree to Cloudinary's
+        <a href="http://www.google.com"> Terms of Service </a>and
+        <a target="_blank" href="http://www.google.com">
+          {" "}
+          Privacy Policy
+        </a>
+      </h5>
     </div>
   );
 }

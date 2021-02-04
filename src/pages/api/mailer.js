@@ -1,10 +1,10 @@
 import nodemailer from "nodemailer";
 import { google } from "googleapis";
+import Template from "../../common/emailTemplate";
 
 export default async function handler(req, res) {
   const { OAuth2 } = google.auth;
   const { email, subject } = req.body;
-  console.log(email, subject);
 
   const OAUTH_PLAYGROUND = "https://developers.google.com/oauthplayground";
   const {
@@ -36,20 +36,11 @@ export default async function handler(req, res) {
           to: email,
           subject: subject,
           text: "",
-          html: `<!doctype html>
-          <html ⚡4email>
-            <head>
-              <meta charset="utf-8">
-              <style amp4email-boilerplate>body{visibility:hidden}</style>
-              <script async src="https://cdn.ampproject.org/v0.js"></script>
-              <script async custom-element="amp-anim" src="https://cdn.ampproject.org/v0/amp-anim-0.1.js"></script>
-            </head>
-            <body>
-              <p>Image: <amp-img src="https://cldup.com/P0b1bUmEet.png" width="16" height="16"/></p>
-              <p>GIF (requires "amp-anim" script in header):<br/>
-                <amp-anim src="https://cldup.com/D72zpdwI-i.gif" width="500" height="350"/></p>
-            </body>
-          </html>`,
+          html: Template({
+            url: "http:localhost:3000",
+            site: "http:localhost:3000",
+            email: "anand.k.rajneesh@gmail.com",
+          }),
         };
 
         const smtpTransport = nodemailer.createTransport({

@@ -18,22 +18,6 @@ export default function checkoutComplete({ rData }) {
   const checkoutState = useSelector((state) => state.checkoutReducer);
   console.log(rData);
 
-  const mailer_data = {
-    email: "anand.k.rajneesh@gmail.com",
-    subject: "Your Order has been placed",
-  };
-
-  const sendOrderMail = async () => {
-    const result = await fetch("/api/mailer", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(mailer_data),
-    });
-
-    const resultJson = await result.json();
-    console.log(resultJson);
-  };
-
   if (!loading && !session) {
     router.push("/");
     return null;
@@ -59,7 +43,7 @@ export default function checkoutComplete({ rData }) {
                 textAlign: "center",
               }}
             >
-              <h4>{checkoutState.message}</h4>
+              {/* <h4>{checkoutState.message}</h4> */}
               <h1>Thank you for purchasing products from us</h1>
               <h3>Your Order Number - {checkoutState.orderID}</h3>
               <h3>We highly regards our customers </h3>

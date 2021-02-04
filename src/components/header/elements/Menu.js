@@ -35,6 +35,16 @@ function Menu({ containerType }) {
 
   const content = (
     <div style={{ textAlign: "center" }}>
+      <div>
+        <Link href="/myaccount">
+          <a>My Account</a>
+        </Link>
+      </div>
+      <div>
+        <Link href="/orders">
+          <a>My Orders</a>
+        </Link>
+      </div>
       <Button onClick={() => signOut()}>Sign Out</Button>
     </div>
   );
@@ -77,7 +87,7 @@ function Menu({ containerType }) {
                 <>
                   <Popover
                     placement="bottom"
-                    title={session.user.error}
+                    title="My Account"
                     content={content}
                     trigger="hover"
                     arrowPointAtCenter
