@@ -4,6 +4,7 @@ const initialState = {
   orderID: "",
   amount: "",
   message: "",
+  cartItems: [],
 };
 
 export default function checkoutReducer(state = initialState, action) {
@@ -14,6 +15,7 @@ export default function checkoutReducer(state = initialState, action) {
         orderID: action.order_id,
         amount: action.amount,
         message: action.message,
+        cartItems: action.cartItems,
       };
 
     case CHECKOUT.CHECKOUT_FAIL:
