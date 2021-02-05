@@ -74,5 +74,9 @@ export default async function handler(req, res) {
     });
   } catch (error) {
     res.status(500).send(error);
+  } finally {
+    async () => {
+      await prisma.$disconnect();
+    };
   }
 }

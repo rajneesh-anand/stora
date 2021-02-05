@@ -36,12 +36,12 @@ function Menu({ containerType }) {
   const content = (
     <div style={{ textAlign: "center" }}>
       <div>
-        <Link href="/myaccount">
+        <Link href="/user/dashboard">
           <a>My Account</a>
         </Link>
       </div>
       <div>
-        <Link href="/orders">
+        <Link href="/user/orders">
           <a>My Orders</a>
         </Link>
       </div>
@@ -124,24 +124,9 @@ function Menu({ containerType }) {
                       </Button>
                     )}
                   </Popover>
-
-                  {/* <span>{session.user.name}</span>
-                  {session.user.image && (
-                    <img
-                      src={session.user.image}
-                      style={{ width: "18px", borderRadius: "50%" }}
-                    />
-                  )}
-                  <Button onClick={() => signOut()}>Sign Out</Button> */}
                 </>
               )}
 
-              {/* <Button onClick={showModal}>
-                <Link href="#">
-                  <a>Join now</a>
-                </Link>
-                Join Now
-              </Button> */}
               <div
                 className="menu-function-item"
                 onClick={() => setWishlistSidebarOpen(true)}

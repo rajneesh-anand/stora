@@ -9,6 +9,10 @@ export default function Offer() {
   return (
     <LayoutOne title="F.A.Q Blogger" description="Shoes Coat Fan mobile">
       <Container>
+        <div className="offer">
+          <p>FREQUENTLY ASKED QUESTION</p>
+        </div>
+        <div className="divider" />
         <Row gutter={{ xs: 0, lg: 70 }}>
           <Col span={24} xs={24} lg={15} xl={17}>
             <Collapse

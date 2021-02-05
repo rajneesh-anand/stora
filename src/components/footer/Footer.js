@@ -39,7 +39,7 @@ function Footer({ containerType }) {
                     <ul>
                       {links.information.map((item, index) => (
                         <li key={index}>
-                          <Link href="#">
+                          <Link href={item.src}>
                             <a>{item.name}</a>
                           </Link>
                         </li>

@@ -30,7 +30,7 @@ function CartSidebar() {
       </div>
       <div className="cart-sidebar-total">
         <h5>
-          Total:
+          Total
           <span>
             {formatCurrency(calculateTotalPrice(cartState), locales, currency)}
           </span>

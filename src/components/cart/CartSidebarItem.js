@@ -71,7 +71,7 @@ function CartSidebarItem({ data }) {
         </div>
         <div className="cart-sidebar-item__close">
           <a href="#" onClick={onRemoveProductFromCart}>
-            <i className="icon_close_alt2" />
+            <i className="icon_close" />
           </a>
         </div>
       </div>
