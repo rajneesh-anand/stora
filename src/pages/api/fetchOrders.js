@@ -16,7 +16,7 @@ export default async function handler(req, res) {
           where: { email: email },
         });
 
-        if (!orders) return res.status(500).json({ error: "no orders" });
+        if (!orders) return res.status(500).json({ message: "no orders" });
         res.json(orders);
       } catch (error) {
         res.status(500).json({ error });
