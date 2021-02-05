@@ -146,7 +146,7 @@
     }
   }
   &-total {
-    background-color: setColor(light);
+    background-color: setColor(rgb(36, 34, 34));
     padding: emCal(16, 40);
     &__table {
       margin-bottom: emCal(16, 50);
@@ -192,7 +192,7 @@
       }
       &-subtotal {
         td {
-          @include typo($fsz: emCal(16, 20), $fw: 700);
+          @include typo($fsz: emCal(24, 20), $fw: 600);
           padding: 1em 0;
         }
       }
@@ -216,9 +216,9 @@
       }
       &-total {
         td {
-          @include typo($fsz: emCal(16, 24), $fw: 700);
+          // @include typo($fsz: emCal(24, 24), $fw: 500);
           &:last-child {
-            color: setColor(red);
+            color: setColor(rgb(46, 32, 32));
           }
         }
       }

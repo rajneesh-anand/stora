@@ -34,18 +34,22 @@ function Menu({ containerType }) {
   };
 
   const content = (
-    <div style={{ textAlign: "center" }}>
+    <div className="popover">
       <div>
         <Link href="/user/dashboard">
           <a>My Account</a>
         </Link>
       </div>
+      <div className="divider" />
       <div>
         <Link href="/user/orders">
           <a>My Orders</a>
         </Link>
       </div>
-      <Button onClick={() => signOut()}>Sign Out</Button>
+      <div className="divider" />
+      <Button type="primary" onClick={() => signOut()}>
+        Sign Out
+      </Button>
     </div>
   );
 
@@ -87,7 +91,7 @@ function Menu({ containerType }) {
                 <>
                   <Popover
                     placement="bottom"
-                    title="My Account"
+                    // title="My Account"
                     content={content}
                     trigger="hover"
                     arrowPointAtCenter

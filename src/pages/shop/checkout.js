@@ -324,8 +324,7 @@ export default function checkout() {
             <div className="checkout-top">
               <Container>
                 <Row gutter={{ xs: 0, lg: 70 }}>
-                  <Col span={24} lg={15} xl={17}>
-                    {!session ? <Button onClick={showModal}>Login</Button> : ""}
+                  <Col span={24} lg={15} xl={15}>
                     <Collapse
                       bordered={false}
                       // activeKey={[activeKey]}
@@ -544,9 +543,8 @@ export default function checkout() {
                   </Col>
                   <Col
                     span={24}
-                    md={16}
-                    lg={9}
-                    xl={7}
+                    lg={8}
+                    xl={8}
                     style={{ paddingLeft: "5px", paddingRight: "14px" }}
                   >
                     <div className="checkout-total">
@@ -554,12 +552,6 @@ export default function checkout() {
                       <div className="checkout-total__table">
                         <div className="divider" />
                         <table className="checkout-total__table-calculate">
-                          {/* <thead>
-                          <tr>
-                            <th>Products</th>
-                            <th>Subtoal</th>
-                          </tr>
-                        </thead> */}
                           <tbody>
                             {cartState.map((item, index) => (
                               <tr key={index}>
@@ -586,7 +578,7 @@ export default function checkout() {
                         </table>
                         <div className="divider" />
 
-                        <table className="checkout-total__table-shiping">
+                        <table>
                           <tbody>
                             <tr>
                               <td>
@@ -595,7 +587,7 @@ export default function checkout() {
                                   defaultValue={"Shipping"}
                                 >
                                   <Radio onClick={handleTotal} value="Shipping">
-                                    Shipping*
+                                    Shipping Charge*
                                   </Radio>
                                   <Radio
                                     onClick={handleTotal}
@@ -604,15 +596,20 @@ export default function checkout() {
                                     Pick Items @ Store
                                   </Radio>
                                 </Radio.Group>
-                                {/* <h5>Shiping</h5>
-                            <p>Shiping to United State</p> */}
                               </td>
-                              {/* <td>Free</td> */}
                             </tr>
                           </tbody>
                         </table>
                         <div className="divider" />
-                        <table className="checkout-total__table-total">
+                        <table
+                          style={{
+                            fontFamily: "Roboto, sans-serif",
+                            fontWeight: "500",
+                            // textTransform: "uppercase",
+                            color: "black",
+                            fontSize: "20px",
+                          }}
+                        >
                           <tbody>
                             <tr>
                               <td>Sub Total</td>
@@ -625,7 +622,7 @@ export default function checkout() {
                               </td>
                             </tr>
                             <tr>
-                              <td>Shipping Charge</td>
+                              <td>Shipping </td>
                               <td>
                                 {shippingCharge > 0
                                   ? formatCurrency(
@@ -633,11 +630,11 @@ export default function checkout() {
                                       locales,
                                       currency
                                     )
-                                  : "FREE"}
+                                  : "Free"}
                               </td>
                             </tr>
                             <tr>
-                              <td>Total</td>
+                              <td>Total Amount </td>
                               <td>
                                 {formatCurrency(
                                   totalCartValue,
@@ -654,7 +651,7 @@ export default function checkout() {
                           form="checkout-form"
                           // key="submit"
                           htmlType="submit"
-                          style={{ marginBottom: 0 }}
+                          style={{ marginBottom: 0, height: "100px" }}
                           onClick={handleSubmit}
                         >
                           PAY WITH RAZORPAY
