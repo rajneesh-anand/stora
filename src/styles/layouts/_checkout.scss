@@ -248,3 +248,14 @@
     }
   }
 }
+.paymentIcon {
+  border: 2px solid red;
+
+  .paytm {
+    background: #dbdde0;
+    color: #fff;
+    &:hover {
+      background: #314e8a;
+    }
+  }
+}

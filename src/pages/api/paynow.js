@@ -11,10 +11,9 @@ export default async function paynow(req, res) {
     case "POST":
       try {
         var reqBody = JSON.parse(req.body);
-        var orderId =
-          "RSGI" + Math.floor(Math.random(6) * 1000000) + new Date().getTime();
+        var orderId = "RSGI" + Math.floor(Math.random(6) * 1000000);
         // var amount = req.body.amount;
-        var callbackUrl = "http://localhost:3000/shop/checkout-complete";
+        var callbackUrl = "http://localhost:3000/shop/checkout-success";
         var userInfo = {
           custId: reqBody.custId,
           mobile: reqBody.mobile,

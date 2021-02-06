@@ -28,6 +28,7 @@ import productData from "../../data/product.json";
 import Product from "../../components/product/Product";
 import Loading from "../../components/other/Loading";
 import { EmptyCart } from "../../icons/emptycart";
+import { PayTMIcon } from "../../icons/paytmIcon";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useSession } from "next-auth/client";
@@ -121,33 +122,6 @@ export default function checkout() {
     ],
   };
 
-  const handlePaytmSubmit = async (e) => {
-    e.preventDefault();
-
-    let data = {
-      custId: "CUSTD1234",
-      mobile: "77777777 777777",
-      email: "test@test.com",
-    };
-
-    fetch("/api/paynow", {
-      method: "POST",
-      body: JSON.stringify(data),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        setToken(data.token);
-        setMid(data.mid);
-        setOrderId(data.orderId);
-        setGotRes(true);
-        document.getElementById("redFrom").submit();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
   const isValid = () => {
     const { name, mobile, address, city, pin, state } = data;
     if (
@@ -161,6 +135,33 @@ export default function checkout() {
       return false;
     } else {
       return true;
+    }
+  };
+
+  const handlePaytmSubmit = async (e) => {
+    if (isValid()) {
+      let data = {
+        custId: "CUSTD1234",
+        mobile: "77777777 777777",
+        email: "test@test.com",
+      };
+
+      fetch("/api/paynow", {
+        method: "POST",
+        body: JSON.stringify(data),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          setToken(data.token);
+          setMid(data.mid);
+          setOrderId(data.orderId);
+          setGotRes(true);
+          document.getElementById("redFrom").submit();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   };
 
@@ -647,25 +648,46 @@ export default function checkout() {
                         </table>
                         <div className="divider" />
                         <Button
-                          className="checkout-functions--next"
                           form="checkout-form"
-                          // key="submit"
                           htmlType="submit"
-                          style={{ marginBottom: 0, height: "100px" }}
+                          style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            padding: "0",
+                            marginTop: "8px",
+                            width: "100%",
+                            height: "42px",
+                            fontSize: "20px",
+                          }}
                           onClick={handleSubmit}
                         >
                           PAY WITH RAZORPAY
                         </Button>
+
                         <Button
-                          className="checkout-functions--next"
                           form="checkout-form"
-                          // key="submit"
                           htmlType="submit"
-                          style={{ marginBottom: 0 }}
                           onClick={handlePaytmSubmit}
+                          style={{
+                            display: "flex",
+                            padding: "0",
+                            marginTop: "8px",
+                            width: "100%",
+                            height: "60px",
+                            justifyContent: "center",
+                          }}
                         >
-                          PAY WITH PAYTM
+                          <p
+                            style={{ paddingRight: "15px", paddingTop: "15px" }}
+                          >
+                            PAY WITH
+                          </p>
+                          <img
+                            src="http://localhost:3000/assets/images/paytm.png"
+                            alt="paytm_logo"
+                          />
                         </Button>
+
                         <Hiddenfrom
                           mid={mid}
                           orderId={orderId}
