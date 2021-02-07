@@ -36,7 +36,7 @@ export default function Contact() {
       subject: user.subject,
       message: user.message,
     };
-    const res = await fetch("/api/complain", {
+    const res = await fetch(`/api/complain`, {
       body: JSON.stringify(email_data),
       headers: {
         "Content-Type": "application/json",
