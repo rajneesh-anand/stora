@@ -29,7 +29,7 @@ export default function checkoutComplete({ rData }) {
   return (
     <LayoutOne title="Checkout Success" description="Shoes Coat Fan mobile">
       <Container>
-        <Row type="flex" align="middle" style={{ height: "60vh" }}>
+        <Row type="flex" align="middle" style={{ height: "70vh" }}>
           <Col>
             <div
               style={{
@@ -39,15 +39,27 @@ export default function checkoutComplete({ rData }) {
               <EmptyCart />
             </div>
             <div
+              className="offer"
               style={{
                 textAlign: "center",
+                paddingTop: "0",
               }}
             >
-              {/* <h4>{checkoutState.message}</h4> */}
-              <h1>Thank you for purchasing products from us</h1>
-              <h3>Your Order Number - {checkoutState.orderID}</h3>
-              <h3>We highly regards our customers </h3>
-              <h1>Your order will be shipped </h1>
+              <p>Thank you for purchasing products from us</p>
+              <h3>
+                Your order number{" "}
+                <span
+                  style={{
+                    fontWeight: "bold",
+                    color: "green",
+                  }}
+                >
+                  {checkoutState.orderID}
+                </span>{" "}
+                has been received
+              </h3>
+
+              <h3>Your order will be shipped </h3>
 
               <Link href="/">
                 <a>Continue Shopping </a>

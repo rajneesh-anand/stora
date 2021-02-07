@@ -122,6 +122,15 @@ export default function checkout() {
     ],
   };
 
+  const handleOnlyNumbers = (e) => {
+    const regex = new RegExp("^[0-9]*$");
+    const pressedKey = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+    if (!regex.test(pressedKey)) {
+      e.preventDefault();
+      return false;
+    }
+  };
+
   const isValid = () => {
     const { name, mobile, address, city, pin, state } = data;
     if (
@@ -188,7 +197,7 @@ export default function checkout() {
       currency: currency,
       name: "BLOGGER....",
       description: "Test Transaction",
-      image: "http://localhost:3000/assets/images/logo-dark.png",
+      image: "/assets/images/logo-dark.png",
       order_id: order_id,
       handler: async function (response) {
         const orderdata = {
@@ -272,6 +281,7 @@ export default function checkout() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+
     setData({
       ...data,
       [name]: value,
@@ -365,7 +375,7 @@ export default function checkout() {
                                 <Input
                                   name="name"
                                   onChange={handleChange}
-                                  placeholder="Please enter your name !"
+                                  // placeholder="Please enter your name !"
                                   value={data.name}
                                 />
                               </Form.Item>
@@ -384,8 +394,9 @@ export default function checkout() {
                                 <Input
                                   name="mobile"
                                   onChange={handleChange}
-                                  placeholder="Contact Number"
+                                  // placeholder="Contact Number"
                                   value={data.mobile}
+                                  onKeyPress={handleOnlyNumbers}
                                 />
                               </Form.Item>
                             </Col>
@@ -464,11 +475,12 @@ export default function checkout() {
                             </Col>
                             <Col span={4} md={4} xs={8}>
                               <Form.Item
-                                label="PIN CODE"
+                                label="PIN"
                                 name="pincode"
                                 rules={[
                                   {
                                     required: true,
+                                    // pattern: new RegExp("^[0-9]*$"),
                                     message: "Postal code !",
                                   },
                                 ]}
@@ -477,6 +489,7 @@ export default function checkout() {
                                   name="pin"
                                   onChange={handleChange}
                                   value={data.pin}
+                                  onKeyPress={handleOnlyNumbers}
                                 />
                               </Form.Item>
                             </Col>
@@ -494,7 +507,6 @@ export default function checkout() {
                               >
                                 <Select
                                   showSearch
-                                  style={{}}
                                   placeholder="Select State"
                                   optionFilterProp="children"
                                   onChange={handleState}
@@ -683,7 +695,7 @@ export default function checkout() {
                             PAY WITH
                           </p>
                           <img
-                            src="http://localhost:3000/assets/images/paytm.png"
+                            src={"/assets/images/paytm.png"}
                             alt="paytm_logo"
                           />
                         </Button>
