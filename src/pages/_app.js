@@ -16,7 +16,7 @@ const MyApp = ({ Component, pageProps, reduxStore, session }) => {
     <Provider store={reduxStore}>
       <AuthProvider
         session={session}
-        options={{ site: "http://localhost:3000" }}
+        options={{ site: process.env.NEXTAUTH_URL }}
       >
         <PersistGate loading={<Loading />} persistor={persistor}>
           <Component {...pageProps} />
