@@ -228,16 +228,15 @@ export default function checkout() {
 
         const resultJson = await result.json();
         console.log(resultJson);
-        const { result } = resultJson;
         console.log(resultJson.msg);
 
         if (resultJson.msg === "success") {
           dispatch(
             checkoutSuccess(
-              result.orderId,
-              result.amount,
-              result.msg,
-              result.items
+              resultJson.result.orderId,
+              resultJson.result.amount,
+              resultJson.msg,
+              resultJson.result.items
             )
           );
           router.push("/shop/checkout-success");
