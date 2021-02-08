@@ -14,6 +14,7 @@ import { EmptyCart } from "../../icons/emptycart";
 export default function checkoutComplete({ rData }) {
   const dispatch = useDispatch();
   const [session, loading] = useSession();
+  const router = useRouter();
 
   const checkoutState = useSelector((state) => state.checkoutReducer);
   console.log(rData);

@@ -46,24 +46,22 @@ export default async function handler(req, res) {
     // THE PAYMENT IS LEGIT & VERIFIED
     // YOU CAN SAVE THE DETAILS IN YOUR DATABASE IF YOU WANT
 
-    const result = await prisma.orders.create({
-      data: {
-        orderId: razorpayOrderId,
-        paymentId: razorpayPaymentId,
-        name: name,
-        email: email,
-        mobile: mobile,
-        addressOne: address,
-        addressTwo: address_two,
-        locality: locality,
-        city: city,
-        pin: pin,
-        state: state,
-        country: country,
-        amount: amount,
-        orderStatus: order_status,
-        items: items_placed,
-      },
+    await prisma.orders.create({
+      orderId: razorpayOrderId,
+      paymentId: razorpayPaymentId,
+      name: name,
+      email: email,
+      mobile: mobile,
+      addressOne: address,
+      addressTwo: address_two,
+      locality: locality,
+      city: city,
+      pin: pin,
+      state: state,
+      country: country,
+      amount: amount,
+      orderStatus: order_status,
+      items: items_placed,
     });
 
     res.json({
