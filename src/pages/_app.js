@@ -17,7 +17,7 @@ const MyApp = ({ Component, pageProps, reduxStore, session }) => {
     <Provider store={reduxStore}>
       <AuthProvider
         session={session}
-        options={{ site: "https://stora-eight.vercel.app" }}
+        options={{ site: "http://localhost:3000" }}
       >
         <PersistGate loading={<Loading />} persistor={persistor}>
           <Component {...pageProps} />
