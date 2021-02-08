@@ -12,11 +12,12 @@ import Loading from "../components/other/Loading";
 import withReduxStore from "../common/withReduxStore";
 
 const MyApp = ({ Component, pageProps, reduxStore, session }) => {
+  // https://stora-eight.vercel.app
   return (
     <Provider store={reduxStore}>
       <AuthProvider
         session={session}
-        options={{ site: "http://localhost:3000" }}
+        options={{ site: "https://stora-eight.vercel.app" }}
       >
         <PersistGate loading={<Loading />} persistor={persistor}>
           <Component {...pageProps} />

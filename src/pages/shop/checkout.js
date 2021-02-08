@@ -195,7 +195,7 @@ export default function checkout() {
       key: "rzp_test_izUIYNmO8F2EMo", // Enter the Key ID generated from the Dashboard
       amount: amount.toString(),
       currency: currency,
-      name: "BLOGGER....",
+      name: "KRAYAH",
       description: "Test Transaction",
       image: "/assets/images/logo-dark.png",
       order_id: order_id,
@@ -227,15 +227,17 @@ export default function checkout() {
         });
 
         const resultJson = await result.json();
-        // console.log(resultJson);
+        console.log(resultJson);
+        const { result } = resultJson;
+        console.log(resultJson.msg);
 
         if (resultJson.msg === "success") {
           dispatch(
             checkoutSuccess(
-              resultJson.orderId,
-              resultJson.amount,
-              resultJson.msg,
-              cartState
+              result.orderId,
+              result.amount,
+              result.msg,
+              result.items
             )
           );
           router.push("/shop/checkout-success");

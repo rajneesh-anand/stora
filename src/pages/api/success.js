@@ -1,9 +1,10 @@
-import Razorpay from "razorpay";
 import crypto from "crypto";
+import { getSession } from "next-auth/client";
 import { PrismaClient } from "@prisma/client";
 
 export default async function handler(req, res) {
   const prisma = new PrismaClient({ log: ["query"] });
+  const session = await getSession({ req });
   console.log(req.body);
   try {
     // getting the details back from our font-end
@@ -46,29 +47,34 @@ export default async function handler(req, res) {
     // THE PAYMENT IS LEGIT & VERIFIED
     // YOU CAN SAVE THE DETAILS IN YOUR DATABASE IF YOU WANT
 
-    await prisma.orders.create({
-      orderId: razorpayOrderId,
-      paymentId: razorpayPaymentId,
-      name: name,
-      email: email,
-      mobile: mobile,
-      addressOne: address,
-      addressTwo: address_two,
-      locality: locality,
-      city: city,
-      pin: pin,
-      state: state,
-      country: country,
-      amount: amount,
-      orderStatus: order_status,
-      items: items_placed,
+    const result = await prisma.orders.create({
+      data: {
+        orderId: razorpayOrderId,
+        paymentId: razorpayPaymentId,
+        name: name,
+        email: email,
+        mobile: mobile,
+        addressOne: address,
+        addressTwo: address_two,
+        locality: locality,
+        city: city,
+        pin: pin,
+        state: state,
+        country: country,
+        amount: amount,
+        orderStatus: order_status,
+        items: items_placed,
+      },
     });
+
+    console.log(result);
 
     res.json({
       msg: "success",
-      orderId: razorpayOrderId,
-      paymentId: razorpayPaymentId,
-      amount: amount,
+      // orderId: razorpayOrderId,
+      // paymentId: razorpayPaymentId,
+      // amount: amount,
+      result: result,
     });
   } catch (error) {
     res.status(500).send(error);
