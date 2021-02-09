@@ -1,8 +1,8 @@
 const Paytm = require("paytm-pg-node-sdk");
 
 export default async function handler(req, res) {
-  var reqBody = JSON.parse(req.body);
-  const { name, email, mobile, address, pin, amount } = reqBody;
+  // var reqBody = JSON.parse(req.body);
+  const { name, email, mobile, address, pin, amount } = req.body;
 
   try {
     var env = Paytm.LibraryConstants.STAGING_ENVIRONMENT;
