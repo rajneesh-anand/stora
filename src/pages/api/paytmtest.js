@@ -1,5 +1,4 @@
 const Paytm = require("paytm-pg-node-sdk");
-const _SampleData = require("./sampledata");
 
 export default async function handler(req, res) {
   var reqBody = JSON.parse(req.body);
