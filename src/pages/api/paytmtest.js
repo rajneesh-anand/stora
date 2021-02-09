@@ -13,7 +13,7 @@ export default async function handler(req, res) {
     var website = "WEBSTAGING";
     //   var client_id = "C15";
 
-    var callbackUrl = "http://localhost:3000/shop/checkout";
+    var callbackUrl = "https://stora-eight.vercel.app/shop/checkout";
 
     Paytm.MerchantProperties.setCallbackUrl(callbackUrl);
     Paytm.MerchantProperties.setCallbackUrl(callbackUrl);
