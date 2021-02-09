@@ -46,10 +46,10 @@ export default function SignIn({ csrfToken }) {
           <span className="fab fa-facebook fa-lg" aria-hidden="true"></span>{" "}
           Login with Facebook
         </a>
-        <a onClick={() => signIn("github")} className="gh">
+        {/* <a onClick={() => signIn("github")} className="gh">
           <span className="fab fa-github" aria-hidden="true"></span> Login with
           GitHub
-        </a>
+        </a> */}
       </div>
       <div className="divider" />
       <div className="login-form">

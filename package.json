@@ -25,6 +25,7 @@
     "next-auth": "^3.2.0-canary.35",
     "next-redux-wrapper": "^6.0.2",
     "nodemailer": "^6.4.17",
+    "paytm-pg-node-sdk": "^1.0.4",
     "razorpay": "^2.0.6",
     "react": "16.14.0",
     "react-countdown": "^2.2.1",

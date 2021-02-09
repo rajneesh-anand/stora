@@ -1,3 +1,4 @@
+import { PrismaClient } from "@prisma/client";
 import {
   Form,
   Input,
@@ -8,13 +9,13 @@ import {
   Col,
   Select,
   Collapse,
-  Typography,
 } from "antd";
 import { CaretRightOutlined } from "@ant-design/icons";
 import { useState, useCallback, useEffect } from "react";
 import Slider from "react-slick";
 import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
+import parse from "urlencoded-body-parser";
 import {
   checkoutSuccess,
   checkoutFail,
@@ -28,33 +29,14 @@ import productData from "../../data/product.json";
 import Product from "../../components/product/Product";
 import Loading from "../../components/other/Loading";
 import { EmptyCart } from "../../icons/emptycart";
-import { PayTMIcon } from "../../icons/paytmIcon";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { useSession } from "next-auth/client";
+import { useSession, getSession } from "next-auth/client";
+
 const AuthMenu = dynamic(() => import("../auth/signin"));
-
-const paymentData = [
-  {
-    name: "Direct Bank Transfer",
-    content:
-      "With so many different ways today to find information online, it can sometimes be hard to know where to go to first.",
-  },
-  {
-    name: "Cheque Payment",
-    content:
-      "With so many different ways today to find information online, it can sometimes be hard to know where to go to first.",
-  },
-  {
-    name: "PayPal",
-    content:
-      "With so many different ways today to find information online, it can sometimes be hard to know where to go to first.",
-  },
-];
-
 const stateData = ["BIHAR", "DELHI"];
 
-export default function checkout() {
+export default function checkout({ resData }) {
   const { Option } = Select;
   const { Panel } = Collapse;
   const router = useRouter();
@@ -62,17 +44,18 @@ export default function checkout() {
   const cartState = useSelector((state) => state.cartReducer);
   const globalState = useSelector((state) => state.globalReducer);
   const { currency, locales } = globalState.currency;
-  const [paymentMethod, setPaymentMethod] = useState("");
   const [shippingCharge, setShippingCharge] = useState(50);
   const [visible, setVisible] = useState(false);
-  const [txToken, setToken] = useState(undefined);
-  const [mid, setMid] = useState(undefined);
-  const [orderId, setOrderId] = useState(undefined);
-  const [gotRes, setGotRes] = useState(false);
   const [session, loading] = useSession();
+  const [load, setLoading] = useState(false);
   const [totalCartValue, setTotalCartValue] = useState(
     calculateTotalPrice(cartState)
   );
+  const [paytmData, setPaytmData] = useState({
+    mid: "",
+    orderId: "",
+    txnToken: "",
+  });
 
   const showModal = () => {
     setVisible(true);
@@ -83,7 +66,6 @@ export default function checkout() {
   const [data, setData] = useState({
     name: "",
     mobile: "",
-    email: "",
     address: "",
     address_two: "",
     locality: "",
@@ -147,32 +129,89 @@ export default function checkout() {
     }
   };
 
-  const handlePaytmSubmit = async (e) => {
+  const handlePaytmSubmit = async () => {
     if (isValid()) {
-      let data = {
-        custId: "CUSTD1234",
-        mobile: "77777777 777777",
-        email: "test@test.com",
+      const orderdata = {
+        name: data.name,
+        email: session.user.email ? session.user.email : session.user.name,
+        mobile: data.mobile,
+        address: data.address,
+        pin: data.pin,
+        amount: totalCartValue.toString(),
       };
 
-      fetch("/api/paynow", {
+      const result = await fetch("/api/paytmtest", {
         method: "POST",
-        body: JSON.stringify(data),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data);
-          setToken(data.token);
-          setMid(data.mid);
-          setOrderId(data.orderId);
-          setGotRes(true);
-          document.getElementById("redFrom").submit();
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+        body: JSON.stringify(orderdata),
+      });
+      const resultJson = await result.json();
+      setPaytmData({
+        mid: "zWEMTK89662017572077",
+        orderId: resultJson.orderId,
+        txnToken: resultJson.txnToken,
+      });
+
+      localStorage.setItem("userInfo", JSON.stringify(data));
+      document.getElementById("redFrom").submit();
     }
   };
+
+  const checkPaymentStatus = async () => {
+    if (resData.STATUS === "TXN_SUCCESS") {
+      setLoading(true);
+      var userInfo = JSON.parse(localStorage.getItem("userInfo"));
+      console.log(userInfo);
+      const orderdata = {
+        orderId: resData.ORDERID,
+        paymentId: resData.TXNID,
+        amount: resData.TXNAMOUNT,
+        name: userInfo.name,
+        email: "test@test.com",
+        mobile: userInfo.mobile,
+        address: userInfo.address,
+        address_two: userInfo.address_two,
+        locality: userInfo.locality,
+        city: userInfo.city,
+        pin: userInfo.pin,
+        state: userInfo.state,
+        country: userInfo.country,
+        order_status: "order_placed",
+        items_placed: cartState,
+      };
+
+      const result = await fetch("/api/paytmsuccess", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(orderdata),
+      });
+
+      const resultJson = await result.json();
+      console.log(resultJson);
+      console.log(resultJson.msg);
+
+      if (resultJson.msg === "success") {
+        dispatch(
+          checkoutSuccess(
+            resultJson.result.orderId,
+            resultJson.result.amount,
+            resultJson.msg,
+            resultJson.result.items
+          )
+        );
+        router.push("/shop/checkout-success");
+        // return null;
+      }
+    }
+
+    if (resData.STATUS === "TXN_FAILURE") {
+      setLoading(true);
+      dispatch(checkoutFail(resultJson.msg));
+      router.push("/shop/checkout-failed");
+      // return null;
+    }
+  };
+
+  //-------------- PAYTM INTEGRATION ENDS HERE ------------------------------
 
   async function displayRazorpay() {
     const result = await fetch("/api/orders", {
@@ -304,12 +343,17 @@ export default function checkout() {
       : setShippingCharge(0);
   };
   useEffect(() => {
+    if (resData) {
+      checkPaymentStatus();
+    }
     let cartTotal = calculateTotalPrice(cartState);
     // let shipping = shippingCharge;
     let total = cartTotal;
     setTotalCartValue(total.toFixed(2));
-  }, [shippingCharge][session]);
-  return (
+  }, [resData][session]);
+  return load ? (
+    <Loading />
+  ) : (
     <LayoutOne title="Checkout">
       {totalCartValue > 0 ? (
         loading ? (
@@ -701,11 +745,7 @@ export default function checkout() {
                           />
                         </Button>
 
-                        <Hiddenfrom
-                          mid={mid}
-                          orderId={orderId}
-                          token={txToken}
-                        />
+                        <Hiddenfrom formData={paytmData} />
                       </div>
                     </div>
                   </Col>
@@ -772,24 +812,27 @@ export default function checkout() {
   );
 }
 
-const Hiddenfrom = (props) => {
+const Hiddenfrom = ({ formData }) => {
   return (
     <div>
       <form
         id="redFrom"
         method="post"
-        action={
-          "https://securegw-stage.paytm.in/theia/api/v1/showPaymentPage?mid=" +
-          props.mid +
-          "&orderId=" +
-          props.orderId
-        }
+        action={`https://securegw-stage.paytm.in/theia/api/v1/showPaymentPage?mid=${formData.mid}&orderId=${formData.orderId}`}
         name="paytm"
       >
-        <input type="hidden" name="mid" value={props.mid} />
-        <input type="hidden" name="orderId" value={props.orderId} />
-        <input type="hidden" name="txnToken" value={props.token} />
+        <input type="hidden" name="mid" value={formData.mid} />
+        <input type="hidden" name="orderId" value={formData.orderId} />
+        <input type="hidden" name="txnToken" value={formData.txnToken} />
       </form>
     </div>
   );
 };
+
+export async function getServerSideProps(context) {
+  const { req, res } = context;
+  const data = await parse(req);
+  return {
+    props: { resData: data },
+  };
+}

@@ -3,7 +3,7 @@ import { useRouter, withRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
 import { removeAllFromCart } from "../../redux/actions/cartActions";
 import { useEffect } from "react";
-import parse from "urlencoded-body-parser";
+
 import Link from "next/link";
 import LayoutOne from "../../components/layouts/LayoutOne";
 import Container from "../../components/other/Container";
@@ -11,13 +11,12 @@ import { formatCurrency } from "../../common/utils";
 import { signIn, getSession, useSession } from "next-auth/client";
 import { EmptyCart } from "../../icons/emptycart";
 
-export default function checkoutComplete({ rData }) {
+export default function checkoutComplete() {
   const dispatch = useDispatch();
   const [session, loading] = useSession();
   const router = useRouter();
 
   const checkoutState = useSelector((state) => state.checkoutReducer);
-  console.log(rData);
 
   if (!loading && !session) {
     router.push("/");
@@ -71,14 +70,4 @@ export default function checkoutComplete({ rData }) {
       </Container>
     </LayoutOne>
   );
-}
-
-export async function getServerSideProps(context) {
-  const session = await getSession(context);
-  const { req } = context;
-  const data = await parse(req);
-
-  return {
-    props: { rData: data },
-  };
 }

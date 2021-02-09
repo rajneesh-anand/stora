@@ -53,7 +53,7 @@ export async function getServerSideProps(context) {
     const user = {
       email: session.user.email,
     };
-    const res = await fetch("http:localhost:3000/api/fetchOrders", {
+    const res = await fetch("http://localhost:3000/api/fetchOrders", {
       body: JSON.stringify(user),
       headers: {
         "Content-Type": "application/json",
