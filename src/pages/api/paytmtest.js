@@ -2,26 +2,22 @@ const Paytm = require("paytm-pg-node-sdk");
 
 export default async function handler(req, res) {
   //   var reqBody = JSON.parse(req.body);
-  const { name, email, mobile, address, pin, amount } = req.body;
+  const { name, email, mobile, address, pin, amount } = JSON.parse(req.body);
 
   try {
     var env = Paytm.LibraryConstants.STAGING_ENVIRONMENT;
-
     var mid = "zWEMTK89662017572077";
     var key = "4GNIZVo6#kP6FYhF";
     var website = "WEBSTAGING";
     //   var client_id = "C15";
 
     var callbackUrl = "https://stora-eight.vercel.app/shop/checkout";
-
     Paytm.MerchantProperties.setCallbackUrl(callbackUrl);
-    Paytm.MerchantProperties.setCallbackUrl(callbackUrl);
-
     Paytm.MerchantProperties.initialize(env, mid, key, website);
     // If you want to add log file to your project, use below code
-    Paytm.Config.logName = "[PAYTM]";
-    Paytm.Config.logLevel = Paytm.LoggingUtil.LogLevel.INFO;
-    Paytm.Config.logfile = "/path/log/file.log";
+    // Paytm.Config.logName = "[PAYTM]";
+    // Paytm.Config.logLevel = Paytm.LoggingUtil.LogLevel.INFO;
+    // Paytm.Config.logfile = "/path/log/file.log";
 
     var orderId = "RSGI" + Math.floor(Math.random(6) * 1000000);
     var channelId = Paytm.EChannelId.WEB;
