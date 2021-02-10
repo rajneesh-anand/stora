@@ -140,7 +140,7 @@ export default function checkout({ resData }) {
         amount: totalCartValue.toString(),
       };
 
-      const result = await fetch("/api/paytmtest", {
+      const result = await fetch("/api/paytm", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(orderdata),
