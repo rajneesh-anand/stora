@@ -142,6 +142,7 @@ export default function checkout({ resData }) {
 
       const result = await fetch("/api/paytmtest", {
         method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(orderdata),
       });
       const resultJson = await result.json();
