@@ -17,7 +17,7 @@ export default async function handler(req, res) {
     mid: PaytmConfig.PaytmConfig.mid,
     websiteName: PaytmConfig.PaytmConfig.website,
     orderId: orderId,
-    callbackUrl: "https://stora-eight.vercel.app",
+    callbackUrl: "https://stora-eight.vercel.app/shop/checkout",
     txnAmount: {
       value: amount,
       currency: "INR",
