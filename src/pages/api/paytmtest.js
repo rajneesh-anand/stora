@@ -15,7 +15,7 @@ export default async function handler(req, res) {
     // If you want to add log file to your project, use below code
     Paytm.Config.logName = "[PAYTM]";
     Paytm.Config.logLevel = Paytm.LoggingUtil.LogLevel.INFO;
-    Paytm.Config.logfile = "/path/log/file.log";
+    Paytm.Config.logfile = "https://stora-eight.vercel.app/logs/file.log";
 
     var orderId = "RSGI" + Math.floor(Math.random(6) * 1000000);
     var channelId = Paytm.EChannelId.WEB;
@@ -67,7 +67,7 @@ export default async function handler(req, res) {
     console.log("Exception caught: ", e);
     Paytm.LoggingUtil.addLog(
       Paytm.LoggingUtil.LogLevel.INFO,
-      "DemoApp",
+      "App",
       "Exception caught: ",
       e
     );
