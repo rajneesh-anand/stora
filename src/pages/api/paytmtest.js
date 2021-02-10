@@ -13,9 +13,9 @@ export default async function handler(req, res) {
     Paytm.MerchantProperties.setCallbackUrl(callbackUrl);
     Paytm.MerchantProperties.initialize(env, mid, key, website);
     // If you want to add log file to your project, use below code
-    // Paytm.Config.logName = "[PAYTM]";
-    // Paytm.Config.logLevel = Paytm.LoggingUtil.LogLevel.INFO;
-    // Paytm.Config.logfile = "/path/log/file.log";
+    Paytm.Config.logName = "[PAYTM]";
+    Paytm.Config.logLevel = Paytm.LoggingUtil.LogLevel.INFO;
+    Paytm.Config.logfile = "/path/log/file.log";
 
     var orderId = "RSGI" + Math.floor(Math.random(6) * 1000000);
     var channelId = Paytm.EChannelId.WEB;
@@ -65,12 +65,12 @@ export default async function handler(req, res) {
     });
   } catch (e) {
     console.log("Exception caught: ", e);
-    // Paytm.LoggingUtil.addLog(
-    //   Paytm.LoggingUtil.LogLevel.INFO,
-    //   "DemoApp",
-    //   "Exception caught: ",
-    //   e
-    // );
+    Paytm.LoggingUtil.addLog(
+      Paytm.LoggingUtil.LogLevel.INFO,
+      "DemoApp",
+      "Exception caught: ",
+      e
+    );
     return Promise.reject(e);
   }
 }
