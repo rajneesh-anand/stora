@@ -13,7 +13,9 @@ import MenuSidebar from "./MenuSidebar";
 import SearchBar from "./SearchBar";
 import { getTotalProductInCart } from "../../../common/shopUtils";
 import Container from "../../other/Container";
-const AuthMenu = dynamic(() => import("../../../pages/auth/signin"));
+const AuthMenu = dynamic(() => import("../../../pages/auth/signin"), {
+  ssr: false,
+});
 
 function Menu({ containerType }) {
   const cartState = useSelector((state) => state.cartReducer);

@@ -4,3 +4,6 @@ node_modules/
 .env
 .next
 .env.local
+logs
+logs/
+/logs
