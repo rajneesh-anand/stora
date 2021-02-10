@@ -1,6 +1,7 @@
 const Paytm = require("paytm-pg-node-sdk");
 
 export default async function handler(req, res) {
+  console.log(req.body);
   const { name, email, mobile, address, pin, amount } = req.body;
   var env = Paytm.LibraryConstants.STAGING_ENVIRONMENT;
   var mid = "zWEMTK89662017572077";
