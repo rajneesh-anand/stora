@@ -56,6 +56,7 @@ export default async function handler(req, res) {
       response.getResponseObject()
     );
     const txnToken = response.getResponseObject().body.txnToken;
-    res.send({ txnToken: txnToken, orderId: orderId });
+    res.statusCode = 200;
+    res.json({ txnToken: txnToken, orderId: orderId });
   });
 }
