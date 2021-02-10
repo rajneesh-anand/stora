@@ -65,12 +65,12 @@ export default async function handler(req, res) {
     });
   } catch (e) {
     console.log("Exception caught: ", e);
-    Paytm.LoggingUtil.addLog(
-      Paytm.LoggingUtil.LogLevel.INFO,
-      "DemoApp",
-      "Exception caught: ",
-      e
-    );
+    // Paytm.LoggingUtil.addLog(
+    //   Paytm.LoggingUtil.LogLevel.INFO,
+    //   "DemoApp",
+    //   "Exception caught: ",
+    //   e
+    // );
     return Promise.reject(e);
   }
 }
