@@ -3,4 +3,5 @@ var PaytmConfig = {
   key: "4GNIZVo6#kP6FYhF",
   website: "WEBSTAGING",
 };
+
 module.exports.PaytmConfig = PaytmConfig;

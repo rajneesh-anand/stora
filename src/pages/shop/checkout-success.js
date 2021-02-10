@@ -24,6 +24,7 @@ export default function checkoutComplete() {
   }
 
   useEffect(() => {
+    localStorage.removeItem("userInfo");
     dispatch(removeAllFromCart());
   }, [session]);
   return (
