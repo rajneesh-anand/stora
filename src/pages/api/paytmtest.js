@@ -1,8 +1,16 @@
 const Paytm = require("paytm-pg-node-sdk");
+const fs = require("fs");
+const path = require("path");
 
 export default async function handler(req, res) {
   console.log(req.body);
   const { name, email, mobile, address, pin, amount } = req.body;
+
+  const dirRelativeToPublicFolder = "logs/app.log";
+
+  const dir = path.resolve("./public", dirRelativeToPublicFolder);
+  console.log(dir);
+
   try {
     var env = Paytm.LibraryConstants.STAGING_ENVIRONMENT;
     var mid = "zWEMTK89662017572077";
@@ -17,7 +25,7 @@ export default async function handler(req, res) {
     // If you want to add log file to your project, use below code
     Paytm.Config.logName = "[PAYTM]";
     Paytm.Config.logLevel = Paytm.LoggingUtil.LogLevel.INFO;
-    Paytm.Config.logfile = "/path/log/file.log";
+    Paytm.Config.logfile = dir;
 
     var orderId = "RSGI" + Math.floor(Math.random(6) * 1000000);
     var channelId = Paytm.EChannelId.WEB;
