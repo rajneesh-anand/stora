@@ -20,6 +20,10 @@
           list-style: none;
           display: flex;
           justify-content: center;
+          @include mq(sm) {
+            justify-content: flex-start;
+            overflow-x: auto;
+          }
 
           a {
             @include link(
@@ -30,6 +34,9 @@
             );
             i {
               font-size: 54px;
+              @include mq(md) {
+                font-size: 32px;
+              }
             }
           }
 
@@ -55,30 +62,30 @@
           }
         }
 
-        @include mq(md) {
-          display: none;
-        }
-        &-mobile {
-          display: none;
-          @include mq(md) {
-            display: block;
-          }
-          .ant-select {
-            .ant-select-selector {
-              background-color: setColor(light);
-              border: 0;
-              border-radius: 0;
-              height: emCal(16, 45);
-              .ant-select-selection-item {
-                font-weight: 700;
-                line-height: emCal(16, 45);
-                i {
-                  margin-right: emCal(16, 15);
-                }
-              }
-            }
-          }
-        }
+        // @include mq(md) {
+        //   display: none;
+        // }
+        // &-mobile {
+        //   display: none;
+        //   @include mq(md) {
+        //     display: block;
+        //   }
+        //   .ant-select {
+        //     .ant-select-selector {
+        //       background-color: setColor(light);
+        //       border: 0;
+        //       border-radius: 0;
+        //       height: emCal(16, 45);
+        //       .ant-select-selection-item {
+        //         font-weight: 700;
+        //         line-height: emCal(16, 45);
+        //         i {
+        //           margin-right: emCal(16, 15);
+        //         }
+        //       }
+        //     }
+        //   }
+        // }
       }
     }
     &-content {

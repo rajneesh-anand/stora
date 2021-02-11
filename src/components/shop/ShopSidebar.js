@@ -77,7 +77,7 @@ function ShopSidebar({ categories }) {
             ))}
         </ul>
       </div>
-      <div className="shop-sidebar__subcategory-mobile">
+      {/* <div className="shop-sidebar__subcategory-mobile">
         <Select
           defaultValue="all"
           style={{ width: "100%" }}
@@ -96,7 +96,7 @@ function ShopSidebar({ categories }) {
               </Option>
             ))}
         </Select>
-      </div>
+      </div> */}
     </div>
   );
 }

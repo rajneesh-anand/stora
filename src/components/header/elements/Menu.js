@@ -133,7 +133,7 @@ function Menu({ containerType }) {
                 </>
               )}
 
-              <div
+              {/* <div
                 className="menu-function-item"
                 onClick={() => setWishlistSidebarOpen(true)}
               >
@@ -149,7 +149,7 @@ function Menu({ containerType }) {
                 ) : (
                   ""
                 )}
-              </div>
+              </div> */}
               <div
                 className="menu-function-item"
                 onClick={() => setCartSidebarOpen(true)}
@@ -176,7 +176,7 @@ function Menu({ containerType }) {
           <SearchBar fillData={productsData} placeholder="Searching..." />
         </Container>
       </div>
-      <Drawer
+      {/* <Drawer
         placement="right"
         title={`Wishlist (${wishlistState.length})`}
         closable={true}
@@ -191,7 +191,7 @@ function Menu({ containerType }) {
         className="menu-side"
       >
         <WishlistSidebar />
-      </Drawer>
+      </Drawer> */}
       <Drawer
         placement="right"
         title={`CART ITEM (${getTotalProductInCart(cartState)})`}
@@ -209,13 +209,13 @@ function Menu({ containerType }) {
         <CartSidebar />
       </Drawer>
       <Drawer
-        placement="right"
+        placement="left"
         closable={true}
         title=" "
         onClose={() => setMenuSidebarOpen(false)}
         closeIcon={
           <>
-            <p>Close</p> <CloseOutlined />
+            <CloseOutlined />
           </>
         }
         visible={menuSidebarOpen}

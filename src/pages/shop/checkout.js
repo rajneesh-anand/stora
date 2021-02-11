@@ -9,6 +9,7 @@ import {
   Col,
   Select,
   Collapse,
+  Divider,
 } from "antd";
 import { CaretRightOutlined } from "@ant-design/icons";
 import { useState, useCallback, useEffect } from "react";
@@ -36,7 +37,7 @@ import { useSession, getSession } from "next-auth/client";
 const AuthMenu = dynamic(() => import("../auth/signin"));
 const stateData = ["BIHAR", "DELHI"];
 
-export default function checkout({ resData }) {
+export default function checkout({ resData, useremail }) {
   const { Option } = Select;
   const { Panel } = Collapse;
   const router = useRouter();
@@ -167,7 +168,7 @@ export default function checkout({ resData }) {
         paymentId: resData.TXNID,
         amount: resData.TXNAMOUNT,
         name: userInfo.name,
-        email: "test@test.com",
+        email: useremail,
         mobile: userInfo.mobile,
         address: userInfo.address,
         address_two: userInfo.address_two,
@@ -380,7 +381,7 @@ export default function checkout({ resData }) {
           <div className="checkout">
             <div className="checkout-top">
               <Container>
-                <Row gutter={{ xs: 0, lg: 70 }}>
+                <Row gutter={{ xs: 0, lg: 30 }}>
                   <Col span={24} lg={15} xl={15}>
                     <Collapse
                       bordered={false}
@@ -600,12 +601,8 @@ export default function checkout({ resData }) {
                       </Panel>
                     </Collapse>
                   </Col>
-                  <Col
-                    span={24}
-                    lg={8}
-                    xl={8}
-                    style={{ paddingLeft: "5px", paddingRight: "14px" }}
-                  >
+
+                  <Col span={24} lg={9} xl={9}>
                     <div className="checkout-total">
                       <h3 className="checkout-title">YOUR ORDER</h3>
                       <div className="checkout-total__table">
@@ -714,12 +711,23 @@ export default function checkout({ resData }) {
                             padding: "0",
                             marginTop: "8px",
                             width: "100%",
-                            height: "42px",
-                            fontSize: "20px",
+                            height: "50px",
                           }}
                           onClick={handleSubmit}
                         >
-                          PAY WITH RAZORPAY
+                          <p
+                            style={{
+                              padding: "10px 5px 10px 5px",
+                              fontSize: "20px",
+                            }}
+                          >
+                            PAY WITH
+                          </p>
+                          <img
+                            style={{ padding: "10px" }}
+                            src={"/assets/images/debit.png"}
+                            alt="cards_logo"
+                          />
                         </Button>
 
                         <Button
@@ -728,21 +736,20 @@ export default function checkout({ resData }) {
                           onClick={handlePaytmSubmit}
                           style={{
                             display: "flex",
+                            justifyContent: "center",
                             padding: "0",
                             marginTop: "8px",
                             width: "100%",
-                            height: "60px",
-                            justifyContent: "center",
+                            height: "50px",
                           }}
                         >
-                          <p
-                            style={{ paddingRight: "15px", paddingTop: "15px" }}
-                          >
+                          <p style={{ padding: "10px", fontSize: "20px" }}>
                             PAY WITH
                           </p>
                           <img
+                            style={{ padding: "8px" }}
                             src={"/assets/images/paytm.png"}
-                            alt="paytm_logo"
+                            alt="paytm"
                           />
                         </Button>
 
@@ -834,6 +841,6 @@ export async function getServerSideProps(context) {
   const { req, res } = context;
   const data = await parse(req);
   return {
-    props: { resData: data },
+    props: { resData: data, useremail: session.user.email },
   };
 }

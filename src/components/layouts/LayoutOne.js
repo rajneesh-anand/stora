@@ -24,9 +24,7 @@ function LayoutOne({
   return (
     <>
       <SEO title={title} description={description} />
-      {/* <Head>
-        <title>{title}</title>
-      </Head> */}
+
       <ScrollHeader headerStyle={headerStyle} containerType={containerType} />
       <div className={`content ${classNames({ "clear-top": clearSpaceTop })}`}>
         {children}

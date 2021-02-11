@@ -5,8 +5,9 @@
     display: block;
     overflow: hidden;
     @include mq(sm) {
-      margin-bottom: emCal(14, 15);
-      margin-top: remCal(1);
+      // margin-bottom: emCal(14, 15);
+      // margin-top: remCal(1);
+      display: none;
     }
     &:hover {
       img {
@@ -16,6 +17,21 @@
     img {
       @include imgCenter;
       transition: $transition;
+    }
+  }
+  .mobile-view {
+    display: none;
+    @include mq(sm) {
+      display: block;
+    }
+    .banner-item-mobile {
+      // height: 180px;
+      // line-height: 180px;
+      text-align: center;
+      // background-image: url('../images/asset2.png');
+      img {
+        object-fit: cover;
+      }
     }
   }
 }

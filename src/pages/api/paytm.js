@@ -6,7 +6,7 @@ const PaytmConfig = require("../../paytm/config");
 
 export default async function handler(req, res) {
   console.log(req.body);
-  const { name, email, mobile, address, pin, amount } = req.body;
+  const { email, amount } = req.body;
 
   var orderId = "RSGI" + Math.floor(Math.random(6) * 1000000);
 
@@ -61,9 +61,9 @@ export default async function handler(req, res) {
 
       post_res.on("end", function () {
         response = JSON.parse(response);
-        console.log("txnToken:", response);
+        // console.log("txnToken:", response);
         const txnToken = response.body.txnToken;
-        console.log(txnToken);
+        // console.log(txnToken);
         res.send({ txnToken: txnToken, orderId: orderId });
       });
     });

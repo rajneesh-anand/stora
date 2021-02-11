@@ -1,24 +1,29 @@
-import { Select } from "antd";
+import { Select, Drawer } from "antd";
+import { CloseOutlined } from "@ant-design/icons";
 import Link from "next/link";
 import { useSelector, useDispatch } from "react-redux";
-import React from "react";
+import React, { useState } from "react";
 
 import {
   setGlobalLanguage,
   setGlobalCurrency,
 } from "../../../redux/actions/globalActions";
 import Container from "../../other/Container";
+import WishlistSidebar from "../../wishlist/WishlistSidebar";
 
 function TopNav({ containerType }) {
   const { Option } = Select;
   const dispatch = useDispatch();
   const globalState = useSelector((state) => state.globalReducer);
+  const wishlistState = useSelector((state) => state.wishlistReducer);
+  const [wishlistSidebarOpen, setWishlistSidebarOpen] = useState(false);
   const onSelectLanguage = (value) => {
     dispatch(setGlobalLanguage(value));
   };
   const onSelectCurrency = (value) => {
     dispatch(setGlobalCurrency(value));
   };
+
   return (
     <div className="top-nav">
       <Container type={containerType}>
@@ -68,8 +73,34 @@ function TopNav({ containerType }) {
                 </a>
               </Link>
             </div>
+
+            <div
+              className="top-nav-links__item"
+              onClick={() => setWishlistSidebarOpen(true)}
+            >
+              <a>
+                <i className="icon_heart" /> Wishlist
+              </a>
+            </div>
           </div>
         </div>
+
+        <Drawer
+          placement="right"
+          title={`Wishlist (${wishlistState.length})`}
+          closable={true}
+          onClose={() => setWishlistSidebarOpen(false)}
+          closeIcon={
+            <>
+              <CloseOutlined />
+            </>
+          }
+          visible={wishlistSidebarOpen}
+          width={445}
+          className="menu-side"
+        >
+          <WishlistSidebar />
+        </Drawer>
       </Container>
     </div>
   );

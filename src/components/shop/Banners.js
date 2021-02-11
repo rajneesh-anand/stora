@@ -1,4 +1,4 @@
-import { Row, Col, Divider } from "antd";
+import { Row, Col, Divider, Carousel } from "antd";
 import Link from "next/link";
 import Container from "../other/Container";
 
@@ -6,6 +6,47 @@ export default function Banners({ containerType }) {
   return (
     <div className="banners">
       <Container type={containerType}>
+        <div className="mobile-view">
+          <Carousel autoplay>
+            <div>
+              <Link href={process.env.PUBLIC_URL + "#"}>
+                <a className="banner-item-mobile">
+                  <img
+                    src={
+                      process.env.PUBLIC_URL + `/assets/images/banners/1.png`
+                    }
+                    alt="banner"
+                  />
+                </a>
+              </Link>
+            </div>
+            <div>
+              <Link href={process.env.PUBLIC_URL + "#"}>
+                <a className="banner-item-mobile">
+                  <img
+                    src={
+                      process.env.PUBLIC_URL + `/assets/images/banners/2.png`
+                    }
+                    alt="banner"
+                  />
+                </a>
+              </Link>
+            </div>
+            <div>
+              <Link href={process.env.PUBLIC_URL + "#"}>
+                <a className="banner-item-mobile">
+                  <img
+                    src={
+                      process.env.PUBLIC_URL + `/assets/images/banners/2.png`
+                    }
+                    alt="banner"
+                  />
+                </a>
+              </Link>
+            </div>
+          </Carousel>
+        </div>
+
         <Row gutter={30}>
           {Array.from({ length: 3 }, (item, index) => (
             <Col key={index} className="gutter-row" span={24} sm={8}>
