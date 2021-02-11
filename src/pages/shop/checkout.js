@@ -37,7 +37,7 @@ import { useSession, getSession } from "next-auth/client";
 const AuthMenu = dynamic(() => import("../auth/signin"));
 const stateData = ["BIHAR", "DELHI"];
 
-export default function checkout({ resData, useremail }) {
+export default function checkout({ resData }) {
   const { Option } = Select;
   const { Panel } = Collapse;
   const router = useRouter();
@@ -168,7 +168,7 @@ export default function checkout({ resData, useremail }) {
         paymentId: resData.TXNID,
         amount: resData.TXNAMOUNT,
         name: userInfo.name,
-        email: useremail,
+        email: "test@test.com",
         mobile: userInfo.mobile,
         address: userInfo.address,
         address_two: userInfo.address_two,
@@ -841,6 +841,6 @@ export async function getServerSideProps(context) {
   const { req, res } = context;
   const data = await parse(req);
   return {
-    props: { resData: data, useremail: session.user.email },
+    props: { resData: data },
   };
 }
