@@ -143,6 +143,7 @@ export default function checkout({ resData }) {
         address_two: data.address_two,
         city: data.city,
         state: data.state,
+        country: data.country,
       };
 
       const result = await fetch("/api/paytm", {
