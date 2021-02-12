@@ -81,3 +81,19 @@
   height: 1px;
   background-color: #ddd;
 }
+.anchorbutton {
+  a {
+    text-align: center;
+    padding: 10px;
+    font-size: 17px;
+    font-weight: 500;
+    margin-bottom: 10px;
+
+    text-transform: uppercase;
+    background: #fb5231;
+    color: white;
+    span {
+      margin-right: 8px;
+    }
+  }
+}
