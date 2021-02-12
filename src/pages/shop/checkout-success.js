@@ -60,12 +60,11 @@ export default function checkoutComplete() {
                 has been received
               </h3>
 
-              <h3>Your order will be shipped </h3>
-
-              <Link href="/">
-                <a>Continue Shopping </a>
-              </Link>
+              <h3>Your order will be shipped soon.</h3>
             </div>
+            <Link href="/">
+              <a>Continue Shopping </a>
+            </Link>
           </Col>
         </Row>
       </Container>

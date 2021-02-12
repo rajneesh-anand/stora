@@ -33,9 +33,8 @@ import { EmptyCart } from "../../icons/emptycart";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useSession, getSession } from "next-auth/client";
-
+import { SHOP } from "../../common/defines";
 const AuthMenu = dynamic(() => import("../auth/signin"));
-const stateData = ["BIHAR", "DELHI"];
 
 export default function checkout({ resData }) {
   const { Option } = Select;
@@ -139,6 +138,11 @@ export default function checkout({ resData }) {
         address: data.address,
         pin: data.pin,
         amount: totalCartValue.toString(),
+        mobile: data.mobile,
+        locality: data.locality,
+        address_two: data.address_two,
+        city: data.city,
+        state: data.state,
       };
 
       const result = await fetch("/api/paytm", {
@@ -153,7 +157,7 @@ export default function checkout({ resData }) {
         txnToken: resultJson.txnToken,
       });
 
-      localStorage.setItem("userInfo", JSON.stringify(data));
+      localStorage.setItem("userInfo", JSON.stringify(orderdata));
       document.getElementById("redFrom").submit();
     }
   };
@@ -168,7 +172,7 @@ export default function checkout({ resData }) {
         paymentId: resData.TXNID,
         amount: resData.TXNAMOUNT,
         name: userInfo.name,
-        email: "test@test.com",
+        email: userInfo.email,
         mobile: userInfo.mobile,
         address: userInfo.address,
         address_two: userInfo.address_two,
@@ -569,7 +573,7 @@ export default function checkout({ resData }) {
                                       .indexOf(input.toLowerCase()) >= 0
                                   }
                                 >
-                                  {stateData.map((city) => (
+                                  {SHOP.states.map((city) => (
                                     <Option key={city} value={city}>
                                       {city}
                                     </Option>
@@ -717,14 +721,14 @@ export default function checkout({ resData }) {
                         >
                           <p
                             style={{
-                              padding: "10px 5px 10px 5px",
+                              padding: "10px 4px",
                               fontSize: "20px",
                             }}
                           >
                             PAY WITH
                           </p>
                           <img
-                            style={{ padding: "10px" }}
+                            style={{ padding: "10px 0px" }}
                             src={"/assets/images/debit.png"}
                             alt="cards_logo"
                           />
