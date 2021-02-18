@@ -6,9 +6,8 @@ import {
 } from "next-auth/client";
 import { PersistGate } from "redux-persist/lib/integration/react";
 import { persistor } from "../redux/store";
-import "../styles/styles.scss";
 import "../styles/antd.less";
-
+import "../styles/styles.scss";
 import Loading from "../components/other/Loading";
 import withReduxStore from "../common/withReduxStore";
 
@@ -18,7 +17,7 @@ const MyApp = ({ Component, pageProps, reduxStore, session }) => {
     <Provider store={reduxStore}>
       <AuthProvider
         session={session}
-        options={{ site: "http://localhost:3000" }}
+        options={{ site: "https://stora-eight.vercel.app" }}
       >
         <PersistGate loading={<Loading />} persistor={persistor}>
           <Component {...pageProps} />

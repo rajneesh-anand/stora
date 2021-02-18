@@ -36,7 +36,7 @@ export default function SignIn({ csrfToken }) {
 
   return (
     <div className="login_wrapper">
-      {/* <h2>Login </h2> */}
+      <h2>Login </h2>
       <div className="social-media">
         <a onClick={() => signIn("google")} className="gg">
           <span className="fab fa-google fa-lg" aria-hidden="true"></span> Login

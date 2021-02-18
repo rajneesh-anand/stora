@@ -14,15 +14,13 @@ function CartSidebar() {
   const { currency, locales } = globalState.currency;
 
   return cartState.length === 0 ? (
-    <div style={{ alignItems: "center" }}>
-      <Empty
-        image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
-        imageStyle={{
-          height: 200,
-        }}
-        description={<span>No product in cart</span>}
-      />
-    </div>
+    <Empty
+      image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
+      imageStyle={{
+        height: 90,
+      }}
+      description={<span>No products in Cart</span>}
+    />
   ) : (
     <div className="cart-sidebar">
       <div className="cart-sidebar-products">
