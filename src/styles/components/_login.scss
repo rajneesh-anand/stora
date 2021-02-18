@@ -354,6 +354,7 @@ p {
   a.email {
     background: teal;
     color: #fff;
+    // border: 1px solid #ea4335;
     &:hover {
       background: #239292;
     }
@@ -410,10 +411,11 @@ p {
       -webkit-text-fill-color: transparent;
       padding: 5px;
     }
-    background: #b3bbc0;
-    color: #fff;
+    background: #ffffff;
+    color: #000;
+    border: 1px solid #ea4335;
     &:hover {
-      background: #1091e1;
+      background: gray;
     }
   }
   a.fb {
@@ -424,8 +426,9 @@ p {
     }
   }
   a.tw {
-    background: #1da1f2;
-    color: #fff;
+    background: #ffffff;
+    color: #000;
+    border: 1px solid #ea4335;
     &:hover {
       background: #1091e1;
     }

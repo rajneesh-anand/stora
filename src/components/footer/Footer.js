@@ -16,12 +16,7 @@ function Footer({ containerType }) {
               <div className="footer-top-item -col-one">
                 <Link href="#">
                   <a>
-                    <img
-                      src={
-                        process.env.PUBLIC_URL + "/assets/images/logo-dark.png"
-                      }
-                      alt="Logo"
-                    />
+                    <img src="/assets/images/logo-dark.png" alt="Logo" />
                   </a>
                 </Link>
                 <p>7176 Blue Spring Lane Santa Monica, CA 90403</p>
@@ -70,9 +65,7 @@ function Footer({ containerType }) {
                 </p>
                 <FooterSubcribe url="https://jster.us7.list-manage.com/subscribe/post?u=ed40c0084a0c5ba31b3365d65&id=ec6f32bf5e" />
                 <img
-                  src={
-                    process.env.PUBLIC_URL + "/assets/images/footer/payment.png"
-                  }
+                  src="/assets/images/footer/payment.png"
                   alt="Payment methods"
                 />
               </div>

@@ -607,7 +607,12 @@ export default function checkout({ resData }) {
                     </Collapse>
                   </Col>
 
-                  <Col span={24} lg={9} xl={9}>
+                  <Col
+                    span={24}
+                    lg={9}
+                    xl={9}
+                    style={{ backgroundColor: "#f2f4f5" }}
+                  >
                     <div className="checkout-total">
                       <h3 className="checkout-title">YOUR ORDER</h3>
                       <div className="checkout-total__table">
@@ -801,10 +806,11 @@ export default function checkout({ resData }) {
                   You haven't added anything in your cart yet. Start adding the
                   products you like.
                 </h4>
-
-                <Link href="/">
-                  <a>ADD ITEMS</a>
-                </Link>
+                <div className="anchorbutton">
+                  <Link href="/">
+                    <a>ADD ITEMS</a>
+                  </Link>
+                </div>
               </div>
             </Col>
           </Row>

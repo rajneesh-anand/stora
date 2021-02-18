@@ -11,36 +11,21 @@ export default function Banners({ containerType }) {
             <div>
               <Link href={process.env.PUBLIC_URL + "#"}>
                 <a className="banner-item-mobile">
-                  <img
-                    src={
-                      process.env.PUBLIC_URL + `/assets/images/banners/1.png`
-                    }
-                    alt="banner"
-                  />
+                  <img src="/assets/images/banners/1.png" alt="banner_1" />
                 </a>
               </Link>
             </div>
             <div>
               <Link href={process.env.PUBLIC_URL + "#"}>
                 <a className="banner-item-mobile">
-                  <img
-                    src={
-                      process.env.PUBLIC_URL + `/assets/images/banners/2.png`
-                    }
-                    alt="banner"
-                  />
+                  <img src="/assets/images/banners/2.png" alt="banner_2" />
                 </a>
               </Link>
             </div>
             <div>
               <Link href={process.env.PUBLIC_URL + "#"}>
                 <a className="banner-item-mobile">
-                  <img
-                    src={
-                      process.env.PUBLIC_URL + `/assets/images/banners/2.png`
-                    }
-                    alt="banner"
-                  />
+                  <img src="/assets/images/banners/3.png" alt="banner_3" />
                 </a>
               </Link>
             </div>
@@ -53,10 +38,7 @@ export default function Banners({ containerType }) {
               <Link href={process.env.PUBLIC_URL + "#"}>
                 <a className="banner-item">
                   <img
-                    src={
-                      process.env.PUBLIC_URL +
-                      `/assets/images/banners/${index + 1}.png`
-                    }
+                    src={`/assets/images/banners/${index + 1}.png`}
                     alt="banner"
                   />
                 </a>
