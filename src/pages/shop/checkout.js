@@ -401,7 +401,7 @@ export default function checkout({ resData }) {
                         header="SHIPPING ADDRESS "
                         key="1"
                         className="site-collapse-custom-panel"
-                        disabled={true}
+                        collapsible="disabled"
                       >
                         <Form
                           name="basic"
@@ -439,7 +439,7 @@ export default function checkout({ resData }) {
                                 rules={[
                                   {
                                     required: true,
-                                    message: "Enter contact number",
+                                    message: "Enter contact number !",
                                   },
                                 ]}
                               >
@@ -514,7 +514,7 @@ export default function checkout({ resData }) {
                                 rules={[
                                   {
                                     required: true,
-                                    message: "Please enter your city!",
+                                    message: "Please enter your city !",
                                   },
                                 ]}
                               >
@@ -607,7 +607,12 @@ export default function checkout({ resData }) {
                     </Collapse>
                   </Col>
 
-                  <Col span={24} lg={9} xl={9}>
+                  <Col
+                    span={24}
+                    lg={9}
+                    xl={9}
+                    style={{ backgroundColor: "#f2f4f5" }}
+                  >
                     <div className="checkout-total">
                       <h3 className="checkout-title">YOUR ORDER</h3>
                       <div className="checkout-total__table">

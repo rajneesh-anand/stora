@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { signIn, signOut, useSession } from "next-auth/client";
-import { Button, Drawer, Modal, Popover } from "antd";
+import { signIn, signOut, useSession, csrfToken } from "next-auth/client";
+import { Button, Drawer, Modal, Popover, Form, Input } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import { CloseOutlined } from "@ant-design/icons";
 
@@ -17,7 +17,7 @@ const AuthMenu = dynamic(() => import("../../../pages/auth/signin"), {
   ssr: false,
 });
 
-function Menu({ containerType }) {
+function Menu({ containerType, csrfToken }) {
   const cartState = useSelector((state) => state.cartReducer);
   const wishlistState = useSelector((state) => state.wishlistReducer);
   const [cartSidebarOpen, setCartSidebarOpen] = useState(false);
@@ -25,8 +25,26 @@ function Menu({ containerType }) {
   const [wishlistSidebarOpen, setWishlistSidebarOpen] = useState(false);
   const [visible, setVisible] = useState(false);
   const [session] = useSession();
+  const [email, setEmail] = useState("");
 
-  const logo = `http://localhost:3000/fav.png`;
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setEmail(value);
+  };
+
+  const isValid = () => {
+    if (email === "") {
+      return false;
+    } else {
+      return true;
+    }
+  };
+
+  const handleSubmit = (e) => {
+    if (isValid()) {
+      signIn("email", { email: email });
+    }
+  };
 
   const showModal = () => {
     setVisible(true);
@@ -226,6 +244,7 @@ function Menu({ containerType }) {
       </Drawer>
 
       <Modal
+        title="Login"
         footer={null}
         afterClose={handleCancel}
         onCancel={handleCancel}
@@ -234,10 +253,73 @@ function Menu({ containerType }) {
         centered
         maskClosable={false}
       >
-        <AuthMenu />
+        <div className="login_wrapper">
+          <div className="social-media">
+            <a onClick={() => signIn("google")} className="gg">
+              <span className="fab fa-google fa-lg" aria-hidden="true"></span>{" "}
+              Login with Google
+            </a>
+            <a onClick={() => signIn("facebook")} className="fb">
+              <span className="fab fa-facebook fa-lg" aria-hidden="true"></span>{" "}
+              Login with Facebook
+            </a>
+          </div>
+          <div className="divider" />
+          <div className="login-form">
+            <Form
+              // className="signin-form"
+              name="basic"
+              initialValues={{ remember: true }}
+              id="login-form"
+              layout="vertical"
+              method="post"
+              action="/api/auth/signin/email"
+            >
+              <input name="csrfToken" type="hidden" defaultValue={csrfToken} />
+              <div>
+                <Input
+                  type="email"
+                  name="email"
+                  required
+                  onChange={handleChange}
+                  placeholder="Enter your email !"
+                  value={email}
+                />
+              </div>
+
+              <a
+                form="login-form"
+                key="submit"
+                onClick={handleSubmit}
+                className="email"
+              >
+                <span
+                  className="fas fa-envelope fa-lg"
+                  aria-hidden="true"
+                ></span>{" "}
+                Login with Email
+              </a>
+            </Form>
+          </div>
+          <h5>
+            By Login, you agree to Krayah's
+            <a href="http://www.google.com"> Terms of Service </a>and
+            <a target="_blank" href="http://www.google.com">
+              {" "}
+              Privacy Policy
+            </a>
+          </h5>
+        </div>
       </Modal>
     </>
   );
+}
+
+export async function getServerSideProps(context) {
+  const csrfToken = await csrfToken(context);
+  return {
+    props: { csrfToken: csrfToken },
+  };
 }
 
 export default React.memo(Menu);
