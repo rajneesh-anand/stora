@@ -9,7 +9,6 @@ import LayoutOne from "../../components/layouts/LayoutOne";
 import Container from "../../components/other/Container";
 import { formatCurrency } from "../../common/utils";
 import { signIn, getSession, useSession } from "next-auth/client";
-import { EmptyCart } from "../../icons/emptycart";
 
 export default function checkoutComplete() {
   const dispatch = useDispatch();
@@ -38,7 +37,7 @@ export default function checkoutComplete() {
                 paddingTop: "30px",
               }}
             >
-              <EmptyCart />
+              <img src="/assets/icons/emptycart.svg" alt="emptycart" />
             </div>
             <div
               className="offer"

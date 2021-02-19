@@ -4,7 +4,6 @@ import Link from "next/link";
 import { Button, Row, Col } from "antd";
 import LayoutOne from "../../components/layouts/LayoutOne";
 import Container from "../../components/other/Container";
-import { EmptyCart } from "../../icons/emptycart";
 
 export default function CheckoutFailed() {
   const checkoutState = useSelector((state) => state.checkoutReducer);
@@ -18,7 +17,7 @@ export default function CheckoutFailed() {
                 textAlign: "center",
               }}
             >
-              <EmptyCart />
+              <img src="/assets/icons/emptycart.svg" alt="emptycart" />
             </div>
             <div
               style={{
