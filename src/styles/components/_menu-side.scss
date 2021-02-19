@@ -3,7 +3,7 @@
     padding: emCal(16, 25) emCal(16, 40);
     display: flex;
     .ant-drawer-title {
-      @include typo($fsz: emCal(16, 20), $fw: 700);
+      @include typo($fsz: emCal(20, 20), $fw: 500);
     }
     .ant-drawer-close {
       position: unset;

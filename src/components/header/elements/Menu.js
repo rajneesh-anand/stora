@@ -212,7 +212,11 @@ function Menu({ containerType, csrfToken }) {
       </Drawer> */}
       <Drawer
         placement="right"
-        title={`CART ITEM (${getTotalProductInCart(cartState)})`}
+        title={
+          getTotalProductInCart(cartState) > 0
+            ? `CART ITEM (${getTotalProductInCart(cartState)})`
+            : "Empty Cart"
+        }
         closable={true}
         onClose={() => setCartSidebarOpen(false)}
         closeIcon={

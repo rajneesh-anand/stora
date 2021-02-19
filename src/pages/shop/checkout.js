@@ -29,7 +29,6 @@ import Container from "../../components/other/Container";
 import productData from "../../data/product.json";
 import Product from "../../components/product/Product";
 import Loading from "../../components/other/Loading";
-import { EmptyCart } from "../../icons/emptycart";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useSession, getSession } from "next-auth/client";
@@ -553,7 +552,7 @@ export default function checkout({ resData }) {
                                 rules={[
                                   {
                                     required: true,
-                                    message: "Please select state!",
+                                    message: "Please select state !",
                                   },
                                 ]}
                               >
@@ -795,7 +794,7 @@ export default function checkout({ resData }) {
                   textAlign: "center",
                 }}
               >
-                <EmptyCart />
+                <img src="/assets/icons/emptycart.svg" alt="emptycart" />
               </div>
               <div
                 style={{

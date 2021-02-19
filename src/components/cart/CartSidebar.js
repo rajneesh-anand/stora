@@ -15,9 +15,9 @@ function CartSidebar() {
 
   return cartState.length === 0 ? (
     <Empty
-      image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
+      image="/assets/icons/emptycart.svg"
       imageStyle={{
-        height: 90,
+        height: 200,
       }}
       description={<span>No products in Cart</span>}
     />

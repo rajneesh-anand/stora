@@ -3,7 +3,6 @@ import Link from "next/link";
 import { Row, Col } from "antd";
 import LayoutOne from "../../components/layouts/LayoutOne";
 import Container from "../../components/other/Container";
-import { EmptyCart } from "../../icons/emptycart";
 
 export default function VerifyLogin() {
   return (
@@ -16,7 +15,7 @@ export default function VerifyLogin() {
                 textAlign: "center",
               }}
             >
-              <EmptyCart />
+              <img src="/assets/icons/icon_mail_alt.svg" alt="mail" />
             </div>
             <div
               style={{

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Menu, Select, Avatar, Button, Modal, Divider } from "antd";
+import { Button, Drawer, Modal, Form, Input, Menu, Select, Avatar } from "antd";
 import {
   UserOutlined,
   AppstoreOutlined,
@@ -20,13 +20,35 @@ import {
   setGlobalCurrency,
 } from "../../../redux/actions/globalActions";
 
-function MenuSidebar() {
+function MenuSidebar({ csrfToken }) {
   const { SubMenu } = Menu;
   const { Option } = Select;
   const dispatch = useDispatch();
   const [session] = useSession();
   const globalState = useSelector((state) => state.globalReducer);
   const [visible, setVisible] = useState(false);
+
+  const [email, setEmail] = useState("");
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setEmail(value);
+  };
+
+  const isValid = () => {
+    if (email === "") {
+      return false;
+    } else {
+      return true;
+    }
+  };
+
+  const handleSubmit = (e) => {
+    if (isValid()) {
+      signIn("email", { email: email });
+    }
+  };
+
   const onSelectLanguage = (value) => {
     dispatch(setGlobalLanguage(value));
   };
@@ -183,6 +205,7 @@ function MenuSidebar() {
         </Select>
       </div> */}
       <Modal
+        title="Login"
         footer={null}
         afterClose={handleCancel}
         onCancel={handleCancel}
@@ -191,10 +214,73 @@ function MenuSidebar() {
         centered
         maskClosable={false}
       >
-        <AuthMenu />
+        <div className="login_wrapper">
+          <div className="social-media">
+            <a onClick={() => signIn("google")} className="gg">
+              <span className="fab fa-google fa-lg" aria-hidden="true"></span>{" "}
+              Login with Google
+            </a>
+            <a onClick={() => signIn("facebook")} className="fb">
+              <span className="fab fa-facebook fa-lg" aria-hidden="true"></span>{" "}
+              Login with Facebook
+            </a>
+          </div>
+          <div className="divider" />
+          <div className="login-form">
+            <Form
+              // className="signin-form"
+              name="basic"
+              initialValues={{ remember: true }}
+              id="login-form"
+              layout="vertical"
+              method="post"
+              action="/api/auth/signin/email"
+            >
+              <input name="csrfToken" type="hidden" defaultValue={csrfToken} />
+              <div>
+                <Input
+                  type="email"
+                  name="email"
+                  required
+                  onChange={handleChange}
+                  placeholder="Enter your email !"
+                  value={email}
+                />
+              </div>
+
+              <a
+                form="login-form"
+                key="submit"
+                onClick={handleSubmit}
+                className="email"
+              >
+                <span
+                  className="fas fa-envelope fa-lg"
+                  aria-hidden="true"
+                ></span>{" "}
+                Login with Email
+              </a>
+            </Form>
+          </div>
+          <h5>
+            By Login, you agree to Krayah's
+            <a href="http://www.google.com"> Terms of Service </a>and
+            <a target="_blank" href="http://www.google.com">
+              {" "}
+              Privacy Policy
+            </a>
+          </h5>
+        </div>
       </Modal>
     </div>
   );
+}
+
+export async function getServerSideProps(context) {
+  const csrfToken = await csrfToken(context);
+  return {
+    props: { csrfToken: csrfToken },
+  };
 }
 
 export default React.memo(MenuSidebar);
