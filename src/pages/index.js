@@ -22,7 +22,7 @@ export default function Home() {
   }, []);
 
   return (
-    <LayoutOne title="Blogger" description="Shoes Coat Fan mobile">
+    <LayoutOne title="HRH STORE" description="Shoes Coat Fan mobile">
       <Banners />
       <ShopLayout
         fourColumn
