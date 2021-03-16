@@ -106,7 +106,7 @@ function Menu({ containerType, csrfToken }) {
             />
             <div className="menu-functions">
               {!session ? (
-                <Button onClick={showModal}>JOIN</Button>
+                <Button onClick={showModal}>Login</Button>
               ) : (
                 <>
                   <Popover

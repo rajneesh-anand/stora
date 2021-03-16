@@ -242,7 +242,7 @@ export default function checkout({ resData }) {
       currency: currency,
       name: "KRAYAH",
       description: "Test Transaction",
-      image: "/assets/images/logo-dark.png",
+      image: "/assets/images/logo.png",
       order_id: order_id,
       handler: async function (response) {
         const orderdata = {

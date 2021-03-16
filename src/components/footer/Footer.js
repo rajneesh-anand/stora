@@ -17,18 +17,16 @@ function Footer({ containerType }) {
                 <Link href="#">
                   <a>
                     <img
-                      src={
-                        process.env.PUBLIC_URL + "/assets/images/logo-dark.png"
-                      }
+                      src={process.env.PUBLIC_URL + "/assets/images/logo.png"}
                       alt="Logo"
                     />
                   </a>
                 </Link>
-                <p>7176 Blue Spring Lane Santa Monica, CA 90403</p>
+                {/* <p>7176 Blue Spring Lane Santa Monica, CA 90403</p>
                 <ul>
                   <li>hi.avitex@gmail.com</li>
                   <li>+01 123 456 888</li>
-                </ul>
+                </ul> */}
               </div>
             </Col>
             <Col className="gutter-row" span="24" sm={12} lg={8}>
@@ -82,7 +80,7 @@ function Footer({ containerType }) {
       </div>
       <div className="footer-bottom">
         <Container type={containerType}>
-          <p>Copyright © 2020 Avitex Inc. All rights reserved</p>
+          <p>Copyright © 2021 HRH STORE, All rights reserved</p>
         </Container>
       </div>
     </div>

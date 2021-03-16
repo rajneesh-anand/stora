@@ -28,7 +28,7 @@ function TopNav({ containerType }) {
     <div className="top-nav">
       <Container type={containerType}>
         <div className="top-nav-wrapper">
-          <div className="top-nav-selects">
+          {/* <div className="top-nav-selects">
             <Select
               defaultValue={globalState.language}
               style={{ width: 90 }}
@@ -36,8 +36,8 @@ function TopNav({ containerType }) {
               onChange={onSelectLanguage}
             >
               <Option value="en">English</Option>
-              {/* <Option value="jp">Japanese</Option>
-              <Option value="vi">Vietnamese</Option> */}
+              <Option value="jp">Japanese</Option>
+              <Option value="vi">Vietnamese</Option>
             </Select>
             <Select
               defaultValue={globalState.currency.currency}
@@ -48,7 +48,7 @@ function TopNav({ containerType }) {
               <Option value="INR">INR</Option>
               <Option value="USD">USD </Option>
             </Select>
-          </div>
+          </div> */}
           <div className="top-nav-links">
             <div className="top-nav-links__item">
               <Link href={process.env.PUBLIC_URL + "/storelocator"}>

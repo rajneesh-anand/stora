@@ -1,5 +1,5 @@
 .menu {
-  background-color: setColor(#000000);
+  background-color: setColor(#c5d8e8);
   padding: emCal(32, 15) 0;
   @include mq(md) {
     margin-bottom: emCal(14, 10);
@@ -145,11 +145,11 @@
     .ant-btn {
       height: emCal(13, 35);
       font-size: emCal(16, 13);
-      font-weight: 800;
+      font-weight: 700;
       text-transform: uppercase;
       border: 1px solid white;
-      color: setShadeColor(#fff);
-      background-color: setColor(#000000);
+      // color: setShadeColor(#fff);
+      background-color: setColor(#c5d8e8);
       letter-spacing: emCal(13, 1.3);
       margin-right: emCal(13, 30);
       // &:hover {

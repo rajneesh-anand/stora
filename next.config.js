@@ -2,6 +2,7 @@ const withSass = require("@zeit/next-sass");
 const withLess = require("@zeit/next-less");
 
 const isProd = process.env.NODE_ENV === "production";
+const assetPrefix = isProd ? "https://example.com/" : "http://localhost:3000/";
 
 // fix: prevents error when .less files are required by node
 if (typeof require !== "undefined") {
@@ -12,6 +13,7 @@ module.exports = withLess(
   withSass({
     env: {
       PUBLIC_URL: "",
+      baseUrl: assetPrefix,
     },
     lessLoaderOptions: {
       javascriptEnabled: true,
